@@ -11,14 +11,23 @@ const IndexPage = () => {
 
     const testButtonFunction = () => {
         const testData = { d : 'example'};
-        return 'Hello World';
-        // fetch('https://us-central1-sustained-node-257616.cloudfunctions.net/TestFunction', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(testData),
-        // });
+        fetch('https://europe-west1-sustained-node-257616.cloudfunctions.net/TestFunction', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(testData),
+        }).then(function(response) {
+            return response.text();
+        }).then(function(data){
+            console.log(data);
+        });
+
+          // .then(
+          // (resp) => {console.log(resp)}).then(
+          //   (json) => {console.log(json)}).catch(
+          //     (err) => {console.log(err)});
     }
     return (<Layout>
         <SEO title="Home"/>
