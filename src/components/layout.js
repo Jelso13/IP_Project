@@ -8,6 +8,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
+import {Navbar, Nav, Button, FormControl, Form} from 'react-bootstrap';
 
 import Header from "./header"
 import "./layout.css"
@@ -25,7 +26,17 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Navbar bg="dark" variant="dark">
+        <Nav className="mr-auto">
+          <Nav.Link href="#home">Home</Nav.Link>
+          <Nav.Link href="#page1">Page 1</Nav.Link>
+          <Nav.Link href="#page2">Page 2</Nav.Link>
+        </Nav>
+        <Form inline>
+          <Button>Login</Button>
+        </Form>
+      </Navbar>
+
       <div
         style={{
           margin: `0 auto`,
