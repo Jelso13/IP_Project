@@ -1,33 +1,26 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
 
 const Header = ({ siteTitle }) => (
   <header
     style={{
-      background: `pink`,
       marginBottom: `1.45rem`,
     }}
   >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
+    <Navbar bg="dark" variant="dark">
+      <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+      <Nav className="mr-auto">
+        <Nav.Link href="#home">Home</Nav.Link>
+        <Nav.Link href="#features">Features</Nav.Link>
+        <Nav.Link href="#pricing">Pricing</Nav.Link>
+      </Nav>
+      <Form inline>
+        // add login name
+      </Form>
+    </Navbar>
   </header>
 )
 
