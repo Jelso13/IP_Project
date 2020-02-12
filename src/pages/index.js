@@ -27,7 +27,11 @@ const IndexPage = () => {
         <div><Button onClick={testButtonFunction} variant="dark">Test Button</Button></div>
 
         <Link to="/page-2/">Go to page 2</Link>
+
+        <h2>Login page</h2>
+        <Link to="/login-page/">Go to Login page</Link>
     </Layout>);
 }
+
 
 export default IndexPage
