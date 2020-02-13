@@ -14,6 +14,7 @@ const LoginPage = () => {
         event.preventDefault()
 
         if(checkBox && username && password){
+
           const userData = { "docName" : username, "password": password};
           fetch('https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin', {
             method: 'POST',
