@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 
 import SEO from "../components/seo"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -28,7 +28,7 @@ const LoginPage = () => {
           }).then(function(data){
             if (data.m === "exists") {
               //Cookie shit
-              //navigate('/home')
+              navigate('/home', {state : {currentUser : username, uType : data.userType}})
               console.log(data.m);
             }
           });

@@ -11,11 +11,10 @@ const Header = ({ siteTitle }) => (
     }}
   >
     <Navbar bg="dark" variant="dark">
-      <Navbar.Brand href="#home">Navbar</Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link href="#home">Home</Nav.Link>
-        <Nav.Link href="#features">Features</Nav.Link>
-        <Nav.Link href="#pricing">Pricing</Nav.Link>
+        <Nav.Link href="#page1">page1</Nav.Link>
+        <Nav.Link href="#page2">page2</Nav.Link>
       </Nav>
       <Form inline>
         // add login name

@@ -6,7 +6,10 @@ import SEO from "../components/seo"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
 
-const IndexPage = () => {
+const HomePage = ({location}) => {
+  const username = location.state.currentUser;
+  const userType = location.state.uType;
+  console.log(userType);
 
   const testButtonFunction = () => {
     const testData = { d : 'example'};
@@ -42,15 +45,13 @@ const IndexPage = () => {
 
   return (<Layout>
     <SEO title="Home"/>
-    <h1>Welcome</h1>
-    <p>This is some test text for the index page</p>
-    <div><Button onClick={testButtonFunction} variant="dark">Test Button</Button></div>
-    <div><Button onClick={getAdmin} variant="dark">return admin details</Button></div>
+    <h1>{"Welcome " + username}</h1>
+    <p>You have now logged in</p>
+    <p>However, some changes with cookies and a user hash is required</p>
     <Link to="/page-2/">Go to page 2</Link>
-    <h2>Login page</h2>
+    <h1></h1>
     <Link to="/login-page/">Go to Login page</Link>
   </Layout>);
 }
 
-
-export default IndexPage
+export default HomePage
