@@ -62,12 +62,12 @@ const LoginPage = () => {
                                       updateCheckBox(!checkBox)
                                   }}/>
                   </Form.Group>
-                  <Button variant="dark" type="submit">
+                  <Button variant="dark" type="submit" onClick={loginHandler}>
                       Submit
                   </Button>
               </Form>
           </Jumbotron>
       </div>
-    )
+    );
 }
 export default LoginPage
