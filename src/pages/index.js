@@ -1,37 +1,73 @@
-import React from "react"
-import { Link } from "gatsby"
+import React, { useState } from "react"
+import { Link, navigate } from "gatsby"
 
-import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button} from 'react-bootstrap';
+import "bootstrap/dist/css/bootstrap.min.css"
+import { Form, Button, Jumbotron } from "react-bootstrap"
 
-const IndexPage = () => {
+const LoginPage = () => {
+    const [username, updateUsername] = useState("")
+    const [password, updatePassword] = useState("")
+    const [checkBox, updateCheckBox] = useState(false)
+    const [respJson, receiveResponse] = useState()
+    const loginHandler = (event) => {
+        event.preventDefault()
 
-    const testButtonFunction = () => {
-        const testData = { d : 'example'};
-        return 'Hello World';
-        // fetch('https://us-central1-sustained-node-257616.cloudfunctions.net/TestFunction', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(testData),
-        // });
+        if(checkBox && username && password){
+
+          const userData = { "docName" : username, "password": password};
+          fetch('https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+          }).then(function(response) {
+            return response.json();
+          }).then(function(data){
+            if (data.m === "exists") {
+              //Cookie shit
+              navigate('/home', {state : {currentUser : username, uType : data.userType}})
+              console.log(data.m);
+            }
+          });
+        }
+
     }
-    return (<Layout>
-        <SEO title="Home"/>
-        <h1>Welcome</h1>
-        <p>This is some test text for the index page</p>
-        <div><Button onClick={testButtonFunction} variant="dark">Test Button</Button></div>
+    return (
+      <div
+        style={{
+            position: "absolute", left: "50%", top: "50%",
+            transform: "translate(-50%, -50%)",
+        }}
+      >
+          <SEO title="Login page"/>
+          <h1>Login</h1>
+          <Jumbotron>
+              <Form onSubmit={loginHandler}>
+                  <Form.Group controlId="formBasicEmail">
+                      <Form.Label>Email address or username</Form.Label>
+                      <Form.Control placeholder="Enter username" onInput={e => updateUsername(e.target.value)}/>
+                  </Form.Group>
 
-        <Link to="/page-2/">Go to page 2</Link>
-
-        <h2>Login page</h2>
-        <Link to="/login-page/">Go to Login page</Link>
-    </Layout>);
+                  <Form.Group controlId="formBasicPassword">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control type="password" placeholder="Password"
+                                    onInput={p => updatePassword(p.target.value)}/>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicCheckbox">
+                      <Form.Check type="checkbox" label="I agree to the non-existent terms and conditions"
+                                  onInput={e => {
+                                      updateCheckBox(!checkBox)
+                                  }}/>
+                  </Form.Group>
+                  <Button variant="dark" type="submit">
+                      Submit
+                  </Button>
+              </Form>
+          </Jumbotron>
+      </div>
+    )
 }
-
-
-export default IndexPage
+export default LoginPage
