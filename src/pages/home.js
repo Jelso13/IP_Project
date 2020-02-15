@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
 
 const HomePage = ({location}) => {
-  //TODO Change names and error codes... The Will paradox
+  //TODO Change names and error codes...
   const username = location.state == null ? "bob" : location.state.currentUser;
   const userType = location.state == null ? "scrub" : location.state.uType;
   console.log(userType);
