@@ -14,6 +14,7 @@ const HomePage = ({location}) => {
   }
   const username = location.state == null ? "" : location.state.currentUser;
   const userType = location.state == null ? "" :location.state.uType;
+
   console.log(userType);
 
   const testButtonFunction = () => {
