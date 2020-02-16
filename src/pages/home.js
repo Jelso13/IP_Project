@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Link, navigate } from "gatsby"
 
 import Layout from "../components/layout"
@@ -9,9 +9,11 @@ import CookieChecker from "../components/CookieChecker"
 
 const HomePage = ({location}) => {
   // alert(location.state);
-  if (location.state == null){
-    navigate("/404");
-  }
+  useEffect(() => {
+    if (location.state == null) {
+      navigate("/404");
+    }
+  })
   const username = location.state == null ? "" : location.state.currentUser;
   const userType = location.state == null ? "" :location.state.uType;
 
