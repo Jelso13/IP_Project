@@ -4,31 +4,31 @@ import React from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
 
-const Header = ({ siteTitle }) => (
+const HeaderPat = ({ siteTitle }) => (
   <header
     style={{
       marginBottom: `1.45rem`,
     }}
   >
     <Navbar bg="dark" variant="dark">
-      <Nav className="mr-auto">
-        <Nav.Link href="/home">Home</Nav.Link>
-        <Nav.Link href="/page1">page1</Nav.Link>
-        <Nav.Link href="/page2">page2</Nav.Link>
+      <Nav className="mr-auto" expand={"lg"}>
+        <Nav.Link href="/home" >Home</Nav.Link>
+        <Nav.Link href="/Appointments">Appointments</Nav.Link>
+        <Nav.Link href="/Availability">Availability</Nav.Link>
       </Nav>
-      <Form inline>
-        // add login name
-      </Form>
+        <Nav>
+          <Nav.Link href="/">Log out</Nav.Link>
+        </Nav>
     </Navbar>
   </header>
 )
 
-Header.propTypes = {
+HeaderPat.propTypes = {
   siteTitle: PropTypes.string,
 }
 
-Header.defaultProps = {
+HeaderPat.defaultProps = {
   siteTitle: ``,
 }
 
-export default Header
+export default HeaderPat
