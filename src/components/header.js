@@ -12,9 +12,9 @@ const Header = ({ siteTitle }) => (
   >
     <Navbar bg="dark" variant="dark">
       <Nav className="mr-auto">
-        <Nav.Link href="#home">Home</Nav.Link>
-        <Nav.Link href="#page1">page1</Nav.Link>
-        <Nav.Link href="#page2">page2</Nav.Link>
+        <Nav.Link href="/home">Home</Nav.Link>
+        <Nav.Link href="/page1">page1</Nav.Link>
+        <Nav.Link href="/page2">page2</Nav.Link>
       </Nav>
       <Form inline>
         // add login name

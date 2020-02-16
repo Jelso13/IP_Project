@@ -1,15 +1,20 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
+import CookieChecker from "../components/CookieChecker"
 
 const HomePage = ({location}) => {
-  //TODO Change names and error codes...
-  const username = location.state == null ? "bob" : location.state.currentUser;
-  const userType = location.state == null ? "scrub" : location.state.uType;
+  // alert(location.state);
+  if (location.state == null){
+    navigate("/404");
+  }
+  const username = location.state == null ? "" : location.state.currentUser;
+  const userType = location.state == null ? "" :location.state.uType;
+
   console.log(userType);
 
   const testButtonFunction = () => {
@@ -43,8 +48,11 @@ const HomePage = ({location}) => {
       console.log(data);
     });
   }
+  console.log(userType)
+  return (
 
-  return (<Layout>
+    <Layout headerChoice={userType}>
+    <CookieChecker />
     <SEO title="Home"/>
     <h1>{"Welcome " + username}</h1>
     <p>You have now logged in</p>
