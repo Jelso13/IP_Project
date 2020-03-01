@@ -52,16 +52,11 @@ const HomePage = ({location}) => {
   }
   console.log(userType)
   return (
-
     <Layout headerChoice={userType}>
     <CookieChecker />
     <SEO title="Home"/>
     <h1>{"Welcome " + username}</h1>
     <p>You have now logged in</p>
-    <p>However, some changes with cookies and a user hash is required</p>
-    <Link to="/page-2/">Go to page 2</Link>
-    <h1></h1>
-    <Link to="/login-page/">Go to Login page</Link>
   </Layout>);
 }
 

@@ -7,7 +7,6 @@ import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
 const HeaderPat = ({ siteTitle }) => (
   <header
     style={{
-      marginBottom: `1.45rem`,
     }}
   >
     <Navbar bg="dark" variant="dark">

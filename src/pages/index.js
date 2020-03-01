@@ -8,12 +8,11 @@ import { Form, Button, Jumbotron } from "react-bootstrap"
 const LoginPage = () => {
     const [username, updateUsername] = useState("")
     const [password, updatePassword] = useState("")
-    const [checkBox, updateCheckBox] = useState(false)
     const [respJson, receiveResponse] = useState()
     const loginHandler = (event) => {
         event.preventDefault()
 
-        if(checkBox && username && password){
+        if(username && password){
 
           const userData = { "docName" : username, "password": password};
           fetch('https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin', {
@@ -55,12 +54,6 @@ const LoginPage = () => {
                       <Form.Label>Password</Form.Label>
                       <Form.Control type="password" placeholder="Password"
                                     onInput={p => updatePassword(p.target.value)}/>
-                  </Form.Group>
-                  <Form.Group controlId="formBasicCheckbox">
-                      <Form.Check type="checkbox" label="I agree to the non-existent terms and conditions"
-                                  onInput={e => {
-                                      updateCheckBox(!checkBox)
-                                  }}/>
                   </Form.Group>
                   <Button variant="dark" type="submit" onClick={loginHandler}>
                       Submit
