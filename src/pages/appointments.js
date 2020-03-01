@@ -1,12 +1,23 @@
-import React from "react"
-import { Link } from "gatsby"
+import React, { useEffect } from "react"
+import { Link, navigate } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
+import CookieChecker from "../components/CookieChecker"
 
-const IndexPage = () => {
+const HomePage = ({location}) => {
+  // alert(location.state);
+  useEffect(() => {
+    if (location.state == null) {
+      navigate("/404");
+    }
+  })
+  const username = location.state == null ? "" : location.state.currentUser;
+  const userType = location.state == null ? "" :location.state.uType;
+
+  console.log(userType);
 
   const testButtonFunction = () => {
     const testData = { d : 'example'};
@@ -39,18 +50,14 @@ const IndexPage = () => {
       console.log(data);
     });
   }
-
-  return (<Layout>
+  console.log(userType)
+  return (
+    <Layout headerChoice={userType}>
+    <CookieChecker />
     <SEO title="Home"/>
-    <h1>Welcome</h1>
-    <p>This is some test text for the index page</p>
-    <div><Button onClick={testButtonFunction} variant="dark">Test Button</Button></div>
-    <div><Button onClick={getAdmin} variant="dark">return admin details</Button></div>
-    <Link to="/page-2/">Go to page 2</Link>
-    <h2>Login page</h2>
-    <Link to="/login-page/">Go to Login page</Link>
+    <h1>{"Welcome " + username}</h1>
+    <p>This is the appointments page and still needs to be done, however has now been linked</p>
   </Layout>);
 }
 
-
-export default IndexPage
+export default HomePage

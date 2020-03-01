@@ -12,7 +12,7 @@ const HeaderPat = ({ siteTitle }) => (
     <Navbar bg="dark" variant="dark">
       <Nav className="mr-auto" expand={"lg"}>
         <Nav.Link href="/home" >Home</Nav.Link>
-        <Nav.Link href="/Appointments">Appointments</Nav.Link>
+        <Nav.Link href="/appointments">Appointments</Nav.Link>
         <Nav.Link href="/Availability">Availability</Nav.Link>
       </Nav>
         <Nav>

@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import { Link, navigate } from "gatsby"
-
+import Cookies from "universal-cookie";
 import SEO from "../components/seo"
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Form, Button, Jumbotron } from "react-bootstrap"
 
 const LoginPage = () => {
+    const cookies = new Cookies();
     const [username, updateUsername] = useState("")
     const [password, updatePassword] = useState("")
     const [respJson, receiveResponse] = useState()
@@ -26,7 +27,8 @@ const LoginPage = () => {
             return response.json();
           }).then(function(data){
             if (data.m === "exists") {
-              //Cookie shit
+              cookies.set("uType", data.userType, {path:'/'});
+              cookies.set("username", username, {path:'/'});
               navigate('/home', {state : {currentUser : username, uType : data.userType}})
               console.log(data.m);
             }
@@ -43,7 +45,7 @@ const LoginPage = () => {
       >
           <SEO title="Login page"/>
           <h1>Login</h1>
-          <Jumbotron>
+          <Jumbotron style={{width:"100%", padding: "75px"}}>
               <Form onSubmit={loginHandler}>
                   <Form.Group controlId="formBasicEmail">
                       <Form.Label>Email address or username</Form.Label>
