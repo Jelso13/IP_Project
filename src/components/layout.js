@@ -17,7 +17,7 @@ import BackgroundP from '../images/BackgroundPatient.png'
 import BackgroundR from '../images/BackgroundReceptionist.png'
 import Cookies from 'universal-cookie';
 
-const Layout = ({ children, headerChoice }) => {
+const Layout = ({ children, headerChoice, changeTab}) => {
     const cookies = new Cookies();
     const [headerChoiceState, updateHeaderChoice] = useState(headerChoice)
     if (cookies.get("username") == undefined) {
@@ -52,7 +52,7 @@ const Layout = ({ children, headerChoice }) => {
               flexDirection:"column",
               overflow:"hidden",
           }}>
-              {headerChoice == "patient" ? <HeaderPat/> : <Header/>}
+              {headerChoice == "patient" ? <HeaderPat changeTab={changeTab}/> : <Header/>}
               <div
                 style={{
                     margin: `0 auto`,
@@ -86,6 +86,7 @@ Layout.propTypes = {
 Layout.defaultProps = {
     headerChoice: "p",
     defaultBackground : "blue",
+    changeTab: () => {console.log("Fuck up Layout")}
 }
 
 export default Layout

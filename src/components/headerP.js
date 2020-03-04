@@ -6,16 +6,16 @@ import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import { navigate } from "gatsby-link"
 
-const HeaderPat = () => {
+const HeaderPat = (props) => {
   const [] = useState(false);
  return ( <header
     style={{}}
   >
     <Navbar bg="dark" variant="dark">
       <Nav className="mr-auto" expand={"lg"}>
-        <Nav.Link href="/home">Home</Nav.Link>
-        <Nav.Link href="/appointments">Appointments</Nav.Link>
-        <Nav.Link href="/Availability">Availability</Nav.Link>
+        <Nav.Link onClick={() => props.changeTab("home")}>Home</Nav.Link>
+        <Nav.Link onClick={() => props.changeTab("appointments")}>Appointments</Nav.Link>
+        <Nav.Link onClick={() => props.changeTab("availability")}>Availability</Nav.Link>
       </Nav>
       <Nav>
         <Nav.Link onClick={() => {
@@ -30,12 +30,8 @@ const HeaderPat = () => {
   </header>)
 }
 
-HeaderPat.propTypes = {
-  siteTitle: PropTypes.string,
-}
-
 HeaderPat.defaultProps = {
-  siteTitle: ``,
+  changeTab: () => {console.log("Fuck Up HeaderP")}
 }
 
 export default HeaderPat
