@@ -1,11 +1,10 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {navigate} from "gatsby"
 import SEO from "../components/seo"
 
-const NotFoundPage = () => (
-  <div>
-      {navigate("/")}
-  </div>
-)
+const NotFoundPage = () => {
+    useEffect(() => {navigate("/")}, [])
+    return (<></>)
+}
 
 export default NotFoundPage

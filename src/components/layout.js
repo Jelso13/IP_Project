@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql, navigate } from "gatsby"
+import { navigate } from "gatsby"
 import {Navbar, Nav, Button, FormControl, Form} from 'react-bootstrap';
 
 import Header from "./header"
@@ -20,24 +20,25 @@ import Cookies from 'universal-cookie';
 const Layout = ({ children, headerChoice, changeTab}) => {
     const cookies = new Cookies();
     const [headerChoiceState, updateHeaderChoice] = useState(headerChoice)
-    if (cookies.get("username") == undefined) {
-        navigate("/404");
-        return(<></>);
-    }
-    if (cookies.get("uType") != headerChoice){
-        navigate("/404")
-    }
-    console.log(headerChoice)
-    if (headerChoice == "patient"){
-        const background = BackgroundP;
-    }
-    else if(headerChoice == "receptionist" || headerChoice == "admin"){
-        const background = BackgroundR;
-    }
-    else{
-        navigate("/");
-        return(<></>);
-    }
+
+    useEffect(() => {
+        if (cookies.get("username") == undefined) {
+            navigate("/404");
+            return (<></>);
+        }
+        if (cookies.get("uType") != headerChoice) {
+            navigate("/404")
+        }
+        console.log(headerChoice)
+        if (headerChoice == "patient") {
+            const background = BackgroundP;
+        } else if (headerChoice == "receptionist" || headerChoice == "admin") {
+            const background = BackgroundR;
+        } else {
+            navigate("/");
+            return (<></>);
+        }
+    }, []);
     return (
       <>
 
