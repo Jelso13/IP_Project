@@ -50,6 +50,7 @@ const Layout = ({ children, headerChoice }) => {
               minHeight:"100%",
               display:"flex",
               flexDirection:"column",
+              overflow:"hidden",
           }}>
               {headerChoice == "patient" ? <HeaderPat/> : <Header/>}
               <div
@@ -68,6 +69,7 @@ const Layout = ({ children, headerChoice }) => {
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "contain",
                     backgroundPosition:"center bottom",
+                    overflow:"hidden",
                 }}
               >
                   <main>{children}</main>

@@ -18,13 +18,13 @@ const HeaderPat = () => {
         <Nav.Link href="/Availability">Availability</Nav.Link>
       </Nav>
       <Nav>
-        <button onClick={() => {
+        <Nav.Link onClick={() => {
           const cookies = new Cookies();
-          cookies.remove("username", {path: "/", domain:"elastic-visvesvaraya-23ac8d.netlify.com"});
-          cookies.remove("uType", {path:"/", domain: "elastic-visvesvaraya-23ac8d.netlify.com"});
+          cookies.remove("username", {path: "/"});
+          cookies.remove("uType", {path:"/"});
           navigate("/home")
         }}>Log out
-        </button>
+        </Nav.Link>
       </Nav>
     </Navbar>
   </header>)
