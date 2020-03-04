@@ -32,8 +32,6 @@ const HomePage = ({location}) => {
     <Layout headerChoice={userType} changeTab={changeTab}>
     <CookieChecker />
     <SEO title="Home"/>
-    <h1>{"Welcome " + username}</h1>
-    <p>{"You have now logged in as "+userType}</p>
       {userType==="patient" ? <PatientComponent currentTab={currentTab} /> : <ReceptionistComponent />}
   </Layout>);
 }
