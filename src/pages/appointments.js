@@ -14,6 +14,7 @@ const HomePage = ({location}) => {
       navigate("/404");
     }
   })
+
   const username = location.state == null ? "" : location.state.currentUser;
   const userType = location.state == null ? "" :location.state.uType;
 

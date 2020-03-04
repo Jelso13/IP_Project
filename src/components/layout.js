@@ -5,9 +5,9 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from "react"
+import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql, navigate } from "gatsby"
 import {Navbar, Nav, Button, FormControl, Form} from 'react-bootstrap';
 
 import Header from "./header"
@@ -15,25 +15,28 @@ import "./layout.css"
 import HeaderPat from "./headerP"
 import BackgroundP from '../images/BackgroundPatient.png'
 import BackgroundR from '../images/BackgroundReceptionist.png'
+import Cookies from 'universal-cookie';
 
 const Layout = ({ children, headerChoice }) => {
-    const defaultBackground = "blue";
-    console.log(headerChoice)
-    const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
+    const cookies = new Cookies();
+    const [headerChoiceState, updateHeaderChoice] = useState(headerChoice)
+    if (cookies.get("username") == undefined) {
+        navigate("/404");
+        return(<></>);
     }
-  `)
+    if (cookies.get("uType") != headerChoice){
+        navigate("/404")
+    }
     console.log(headerChoice)
     if (headerChoice == "patient"){
         const background = BackgroundP;
     }
-    else{
+    else if(headerChoice == "receptionist" || headerChoice == "admin"){
         const background = BackgroundR;
+    }
+    else{
+        navigate("/");
+        return(<></>);
     }
     return (
       <>
@@ -41,14 +44,14 @@ const Layout = ({ children, headerChoice }) => {
             {/*<Header siteTitle={data.site.siteMetadata.title}/>*/}
           <div
           style={{
-              backgroundImage: headerChoice == "patient" ? "linear-gradient(#FFFFFF,#d1e3ff)" : "linear-gradient(#172850,#13062e)",
+              backgroundImage: headerChoiceState == "patient" ? "linear-gradient(#FFFFFF,#d1e3ff)" : "linear-gradient(#172850,#13062e)",
               // backgroundImage:"linear-gradient(to bottom, rgb(23, 45, 85) 0%, rgb(17, 6, 43) 99%, rgb(62, 104, 76) 100%)",
               height:"100vh",
               minHeight:"100%",
               display:"flex",
               flexDirection:"column",
           }}>
-              {headerChoice == "patient" ? <HeaderPat/> : <Header siteTitle={data.site.siteMetadata.title}/>}
+              {headerChoice == "patient" ? <HeaderPat/> : <Header/>}
               <div
                 style={{
                     margin: `0 auto`,

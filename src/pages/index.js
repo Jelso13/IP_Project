@@ -11,10 +11,8 @@ const LoginPage = () => {
     const [password, updatePassword] = useState("")
     const [respJson, receiveResponse] = useState()
     const loginHandler = (event) => {
-        event.preventDefault()
-
+        event.preventDefault();
         if(username && password){
-
           const userData = { "docName" : username, "password": password};
           fetch('https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin', {
             method: 'POST',

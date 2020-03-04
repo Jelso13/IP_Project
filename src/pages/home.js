@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Link, navigate } from "gatsby"
 
 import Layout from "../components/layout"
@@ -10,35 +10,22 @@ import CookieChecker from "../components/CookieChecker"
 
 const HomePage = ({location}) => {
   const cookies = new Cookies();
-  console.log(cookies.getAll());
+  // console.log(cookies.getAll());
   var uType = cookies.get("uType");
   var userName = cookies.get("username");
-  // alert(location.state);
+
+  // fetch calls should be in useEffect
   useEffect(() => {
-    if (location.state == null && cookies.get("username") == null) {
+    if (location.state == null && cookies.get("username") == undefined) {
       navigate("/404");
     }
-  })
+  }, [])
+
   const username = cookies.get("username");
   const userType = cookies.get("uType");
 
   console.log(userType);
 
-  const getAdmin = () => {
-    const testData = { "docName" : "adminAccount"};
-    fetch('https://europe-west1-sustained-node-257616.cloudfunctions.net/getAdminUserTest', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(testData),
-    }).then(function(response) {
-      return response.json();
-    }).then(function(data){
-      console.log(data);
-    });
-  }
   console.log(userType)
   return (
     <Layout headerChoice={userType}>

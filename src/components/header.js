@@ -3,8 +3,9 @@ import PropTypes from "prop-types"
 import React from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
+import Cookies from "universal-cookie"
 
-const Header = ({ siteTitle }) => (
+const Header = () => (
   <header
     style={{
     }}
@@ -15,9 +16,14 @@ const Header = ({ siteTitle }) => (
         <Nav.Link href="/CallRequests">Call Requests</Nav.Link>
         <Nav.Link href="/AppointmentSlots">Appointment Slots</Nav.Link>
       </Nav>
-        <Nav>
-            <Nav.Link href="/">Log out</Nav.Link>
-        </Nav>
+      <Nav>
+        <Nav.Link href="/" onClick={() => {
+          var cookies = new Cookies();
+          cookies.remove("username");
+          cookies.remove("uType");
+        }
+        }>Log out</Nav.Link>
+      </Nav>
     </Navbar>
   </header>
 )
