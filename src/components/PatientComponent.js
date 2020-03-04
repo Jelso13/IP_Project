@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, {} from "react"
 
 const PatientComponent = (props) => {
     if (props.currentTab === "home") {

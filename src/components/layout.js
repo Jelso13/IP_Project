@@ -1,59 +1,37 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
-import React, { useEffect, useState } from "react"
+import React, {useEffect} from "react"
 import PropTypes from "prop-types"
 import { navigate } from "gatsby"
-import {Navbar, Nav, Button, FormControl, Form} from 'react-bootstrap';
-
 import Header from "./header"
 import "./layout.css"
 import HeaderPat from "./headerP"
-import BackgroundP from '../images/BackgroundPatient.png'
 import BackgroundR from '../images/BackgroundReceptionist.png'
 import Cookies from 'universal-cookie';
 
 const Layout = ({ children, headerChoice, changeTab}) => {
-    const cookies = new Cookies();
-    const [headerChoiceState, updateHeaderChoice] = useState(headerChoice)
 
     useEffect(() => {
-        if (cookies.get("username") == undefined) {
+        const cookies = new Cookies();
+        if (cookies.get("username") === undefined) {
             navigate("/404");
             return (<></>);
         }
-        if (cookies.get("uType") != headerChoice) {
+        if (cookies.get("uType") !== headerChoice) {
             navigate("/404")
         }
-        console.log(headerChoice)
-        if (headerChoice == "patient") {
-            const background = BackgroundP;
-        } else if (headerChoice == "receptionist" || headerChoice == "admin") {
-            const background = BackgroundR;
-        } else {
-            navigate("/");
-            return (<></>);
-        }
-    }, []);
+    }, [headerChoice]);
     return (
       <>
-
             {/*<Header siteTitle={data.site.siteMetadata.title}/>*/}
           <div
           style={{
-              backgroundImage: headerChoiceState == "patient" ? "linear-gradient(#FFFFFF,#d1e3ff)" : "linear-gradient(#172850,#13062e)",
-              // backgroundImage:"linear-gradient(to bottom, rgb(23, 45, 85) 0%, rgb(17, 6, 43) 99%, rgb(62, 104, 76) 100%)",
+              backgroundImage: headerChoice === "patient" ? "linear-gradient(#FFFFFF,#d1e3ff)" : "linear-gradient(#172850,#13062e)",
               height:"100vh",
               minHeight:"100%",
               display:"flex",
               flexDirection:"column",
               overflow:"hidden",
           }}>
-              {headerChoice == "patient" ? <HeaderPat changeTab={changeTab}/> : <Header/>}
+              {headerChoice === "patient" ? <HeaderPat changeTab={changeTab}/> : <Header/>}
               <div
                 style={{
                     margin: `0 auto`,
@@ -87,7 +65,7 @@ Layout.propTypes = {
 Layout.defaultProps = {
     headerChoice: "p",
     defaultBackground : "blue",
-    changeTab: () => {console.log("Fuck up Layout")}
+    changeTab: () => {console.warn("error no prop passed on layout")}
 }
 
 export default Layout

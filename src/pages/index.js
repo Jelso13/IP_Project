@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link, navigate } from "gatsby"
+import {navigate } from "gatsby"
 import Cookies from "universal-cookie";
 import SEO from "../components/seo"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -9,7 +9,6 @@ const LoginPage = () => {
     const cookies = new Cookies();
     const [username, updateUsername] = useState("")
     const [password, updatePassword] = useState("")
-    const [respJson, receiveResponse] = useState()
     const loginHandler = (event) => {
         event.preventDefault();
         if(username && password){

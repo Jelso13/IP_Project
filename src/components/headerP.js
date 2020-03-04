@@ -1,13 +1,10 @@
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React, { useState } from "react"
+import React, {} from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Navbar, Nav, Form, FormControl, Button} from 'react-bootstrap';
+import {Navbar, Nav} from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import { navigate } from "gatsby-link"
 
 const HeaderPat = (props) => {
-  const [] = useState(false);
  return ( <header
     style={{}}
   >
@@ -22,7 +19,7 @@ const HeaderPat = (props) => {
           const cookies = new Cookies();
           cookies.remove("username", {path: "/"});
           cookies.remove("uType", {path:"/"});
-          navigate("/home")
+          navigate("/404");
         }}>Log out
         </Nav.Link>
       </Nav>
@@ -31,7 +28,7 @@ const HeaderPat = (props) => {
 }
 
 HeaderPat.defaultProps = {
-  changeTab: () => {console.log("Fuck Up HeaderP")}
+  changeTab: () => {console.warn("error no prop passed in headerP")}
 }
 
 export default HeaderPat
