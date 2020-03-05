@@ -1,35 +1,32 @@
-import PropTypes from "prop-types"
 import React from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Nav} from 'react-bootstrap';
 import Cookies from "universal-cookie"
+import { navigate } from "gatsby-link"
 
-const Header = () => (
+const Header = (props) => (
   <header
     style={{
     }}
   >
     <Navbar bg="dark" variant="dark">
-      <Nav className="mr-auto">
-        <Nav.Link href="/home">Home</Nav.Link>
-        <Nav.Link href="/CallRequests">Call Requests</Nav.Link>
-        <Nav.Link href="/AppointmentSlots">Appointment Slots</Nav.Link>
+      <Nav className="mr-auto" expand={"lg"}>
+        <Nav.Link onClick={() => props.changeTab("home")}>Home</Nav.Link>
+        <Nav.Link onClick={() => props.changeTab("appointmentSlots")}>Appointment Management</Nav.Link>
+        <Nav.Link onClick={() => props.changeTab("callRequests")}>Call Requests</Nav.Link>
       </Nav>
       <Nav>
-        <Nav.Link href="/" onClick={() => {
-          var cookies = new Cookies();
-          cookies.remove("username");
-          cookies.remove("uType");
-        }
-        }>Log out</Nav.Link>
+        <Nav.Link onClick={() => {
+          const cookies = new Cookies();
+          cookies.remove("username", {path: "/"});
+          cookies.remove("uType", {path:"/"});
+          navigate("/404");
+        }}>Log out
+        </Nav.Link>
       </Nav>
     </Navbar>
   </header>
 )
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
 
 Header.defaultProps = {
   siteTitle: ``,

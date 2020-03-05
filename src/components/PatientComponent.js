@@ -1,7 +1,6 @@
 import React, {} from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Table, Button } from "react-bootstrap"
-import Layout from "./layout"
 import Cookies from 'universal-cookie';
 import Calendar from 'rc-calendar';
 

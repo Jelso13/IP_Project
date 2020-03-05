@@ -24,14 +24,14 @@ const Layout = ({ children, headerChoice, changeTab}) => {
             {/*<Header siteTitle={data.site.siteMetadata.title}/>*/}
           <div
           style={{
-              backgroundImage: headerChoice === "patient" ? "linear-gradient(#FFFFFF,#d1e3ff)" : "linear-gradient(#172850,#13062e)",
+              backgroundImage: headerChoice === "patient" ? "linear-gradient(#FFFFFF,#818cf7)" : "linear-gradient(#ffffff,#f1cfff)",
               height:"100vh",
               minHeight:"100%",
               display:"flex",
               flexDirection:"column",
               overflow:"hidden",
           }}>
-              {headerChoice === "patient" ? <HeaderPat changeTab={changeTab}/> : <Header/>}
+              {headerChoice === "patient" ? <HeaderPat changeTab={changeTab}/> : <Header changeTab={changeTab}/>}
               <div
                 style={{
                     margin: `0 auto`,

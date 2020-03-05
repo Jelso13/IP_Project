@@ -26,13 +26,12 @@ const HomePage = ({location}) => {
     }
   }, [location.state])
 
-  const username = cookies.get("username");
   const userType = cookies.get("uType");
   return (
     <Layout headerChoice={userType} changeTab={changeTab}>
     <CookieChecker />
     <SEO title="Home"/>
-      {userType==="patient" ? <PatientComponent currentTab={currentTab} /> : <ReceptionistComponent />}
+      {userType==="patient" ? <PatientComponent currentTab={currentTab} /> : <ReceptionistComponent currentTab={currentTab} />}
   </Layout>);
 }
 
