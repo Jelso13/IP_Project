@@ -1,37 +1,55 @@
 import React, { useState } from "react"
-import {navigate } from "gatsby"
-import Cookies from "universal-cookie";
+import { navigate } from "gatsby"
+import Cookies from "universal-cookie"
 import SEO from "../components/seo"
 import "bootstrap/dist/css/bootstrap.min.css"
-import { Form, Button, Jumbotron } from "react-bootstrap"
+import { Form, Button, Jumbotron, Alert } from "react-bootstrap"
+import PatientComponent from "../components/PatientComponent"
+import ReceptionistComponent from "../components/ReceptionistComponent"
+import Layout from "../components/layout"
 
 const LoginPage = () => {
-    const cookies = new Cookies();
+    const cookies = new Cookies()
     const [username, updateUsername] = useState("")
     const [password, updatePassword] = useState("")
-    const loginHandler = (event) => {
-        event.preventDefault();
-        if(username && password){
-          const userData = { "docName" : username, "password": password};
-          fetch('https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-          }).then(function(response) {
-            return response.json();
-          }).then(function(data){
-            if (data.m === "exists") {
-              cookies.set("uType", data.userType, {path:'/'});
-              cookies.set("username", username, {path:'/'});
-              navigate('/home', {state : {currentUser : username, uType : data.userType}})
-              console.log(data.m);
-            }
-          });
-        }
+    const [error, setError] = useState(false)
 
+    const DismissableAlert = () => {
+        if (error) {
+            return (
+              <Alert variant="danger" onClose={() => setError(false)} dismissible>
+                  Invalid Login Credentials
+              </Alert>
+            )
+        }
+        return <p></p>
+    }
+
+    const loginHandler = (event) => {
+        event.preventDefault()
+        if (username && password) {
+            const userData = { "docName": username, "password": password }
+            fetch("https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userData),
+            }).then(function(response) {
+                return response.json()
+            }).then(function(data) {
+                if (data.m === "exists") {
+                    cookies.set("uType", data.userType, { path: "/" })
+                    cookies.set("username", username, { path: "/" })
+                    navigate("/home", { state: { currentUser: username, uType: data.userType } })
+                    console.log(data.m)
+                } else {
+                    setError(true)
+                    console.log(error)
+                }
+            })
+        }
     }
     return (
       <div
@@ -42,7 +60,7 @@ const LoginPage = () => {
       >
           <SEO title="Login page"/>
           <h1>Login</h1>
-          <Jumbotron style={{width:"100%", padding: "75px"}}>
+          <Jumbotron style={{ width: "100%", padding: "75px" }}>
               <Form onSubmit={loginHandler}>
                   <Form.Group controlId="formBasicEmail">
                       <Form.Label>Email address or username</Form.Label>
@@ -58,8 +76,11 @@ const LoginPage = () => {
                       Submit
                   </Button>
               </Form>
+              {error ? <DismissableAlert/> : <p/>}
           </Jumbotron>
       </div>
-    );
+    )
 }
+
+
 export default LoginPage
