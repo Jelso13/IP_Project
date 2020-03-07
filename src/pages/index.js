@@ -17,8 +17,9 @@ const LoginPage = () => {
     const DismissableAlert = () => {
         if (error) {
             return (
-              <Alert variant="danger" onClose={() => setError(false)} dismissible>
-                  Invalid Login Credentials
+              <Alert variant="danger" onClose={() => setError(false)} dismissible style={{fontSize:10}}>
+                  <p style={{fontSize:13}}>Invalid Login Credentials</p>
+                  default logins: "patient" and "reception" with password "password"
               </Alert>
             )
         }
@@ -28,7 +29,7 @@ const LoginPage = () => {
     const loginHandler = (event) => {
         event.preventDefault()
         if (username && password) {
-            const userData = { "docName": username, "password": password }
+            const userData = { "username": username, "password": password }
             fetch("https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin", {
                 method: "POST",
                 mode: "cors",
@@ -40,15 +41,16 @@ const LoginPage = () => {
                 return response.json()
             }).then(function(data) {
                 if (data.m === "exists") {
-                    cookies.set("uType", data.userType, { path: "/" })
+                    cookies.set("uType", data.type, { path: "/" })
                     cookies.set("username", username, { path: "/" })
-                    navigate("/home", { state: { currentUser: username, uType: data.userType } })
-                    console.log(data.m)
+                    navigate("/home", { state: { currentUser: username, uType: data.type } })
                 } else {
                     setError(true)
-                    console.log(error)
                 }
             })
+        }
+        else{
+            setError(true);
         }
     }
     return (
