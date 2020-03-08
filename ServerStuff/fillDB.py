@@ -1,4 +1,7 @@
 import requests
+import random
+
+# This function *currently* wipes the database, then adds standard values to the database so that each user has
 
 names = ['Harrison Poole', 'Freddie Dawson', 'Abbie Walsh', 'Louie Stewart', 'Tilly Fisher', 'Skye Moore', 'Alicia Harrison', 'Alexandra Wilkinson', 'David Johnston', 'Josh Burton']
 usernames = [name.replace(" ","").lower() for name in names]
@@ -15,7 +18,7 @@ receptionNames.append("reception")
 
 password = "pass"
 
-req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/WipeUsers", json={})
+req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/WipeUsers", json={})
 print(req.status_code)
 
 for i in range(len(patientUsernames)):
@@ -35,5 +38,23 @@ for i in range(len(receptionUsernames)):
         "password": "password"
     }
     req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateUser", json=my_json)
+
+doctors = ["Dr Who", "Dr Watson", "Dr Seuss", "Dr Smith", "Dr Jones", "Dr Singh"]
+clinics = ["Anaesthetics", "Cardiology", "Diagnostic imaging", "Ear nose and throat (ENT)", "Haematology", "Neurology", "Oncology", "Physiotherapy"]
+
+for i in range(len(patientUsernames)):
+    for j in range(random.randrange(3,10)):
+        time = str(random.randrange(0,25))+":"+str(random.choice(["00", "30"]))
+        date = str(random.randrange(1,29))+"/"+str(random.randrange(1,13))+str(random.randrange(2015,2020))
+        my_json = {
+            "username": patientUsernames[i],
+            "time": time,
+            "date": date,
+            "doctor": random.choice(doctors),
+            "clinic": random.choice(clinics)
+        }
+        req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment", json=my_json)
+
+
 
 print("done")
