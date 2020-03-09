@@ -1,5 +1,9 @@
 import requests
 import random
+from datetime import datetime
+
+currentDate = str(datetime.date(datetime.now())).split("-")
+currentDate.reverse()
 
 # This function *currently* wipes the database, then adds standard values to the database so that each user has
 
@@ -45,7 +49,7 @@ clinics = ["Anaesthetics", "Cardiology", "Diagnostic imaging", "Ear nose and thr
 for i in range(len(patientUsernames)):
     for j in range(random.randrange(3,10)):
         time = str(random.randrange(0,25))+":"+str(random.choice(["00", "30"]))
-        date = str(random.randrange(1,29))+"/"+str(random.randrange(1,13))+str(random.randrange(2015,2020))
+        date = str(random.randrange(1,29)).rjust(2,"0")+"/"+str(random.randrange(int(currentDate[1]),13)).rjust(2,"0")+"/2020"
         my_json = {
             "username": patientUsernames[i],
             "time": time,

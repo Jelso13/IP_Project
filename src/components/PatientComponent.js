@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { Table, Button, Form } from "react-bootstrap"
 import Cookies from "universal-cookie"
 import Calendar from "rc-calendar"
-import { navigate } from "gatsby-link"
 
 const PatientComponent = (props) => {
     if (props.currentTab === "home") {
@@ -15,7 +14,6 @@ const PatientComponent = (props) => {
     } else {
         return (<h1>Error</h1>)
     }
-    // return(<div>{props.currentTab === "home" ? <HomeComp /> : (props.currentTab === "appointments" ? <AppointmentComp /> : <AvailabilityComp/>)}</div>)
 }
 
 const HomeComp = () => {
@@ -31,12 +29,11 @@ const HomeComp = () => {
 }
 
 const AppointmentComp = () => {
-    //const [checkState, changeCheck] = useState([])
-
     const cookies = new Cookies();
     const username = cookies.get("username");
     const [appointments, updateAppointments] = useState([]);
-    const [checkstate, updateCheck] = useState([]);
+    //const [checkstate, updateCheck] = useState([]);
+    const checkboxes = [];
     useEffect(() => {
         fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAppointments", {
             method: "POST",
@@ -52,6 +49,17 @@ const AppointmentComp = () => {
             console.log(data)
         });
     }, []);
+
+    appointments.sort(function(a,b){
+        var r1 = a.date.split('/').reverse().join('');
+        var r2 = b.date.split('/').reverse().join('');
+        console.log(r1)
+        console.log(r2)
+        console.log("##")
+        return r1 > r2 ? 1 : r1 < r2 ? -1 : 0;
+      }
+
+    );
 
     // change the values below dynamically using .map to dynamically create
     // the html for the values queried from the database
@@ -72,29 +80,11 @@ const AppointmentComp = () => {
               </tr>
               </thead>
               <tbody>
-              <TableRow date={"12/1/2019"} time={"12:00"} doctor={"Dr Man"} clinic={"big clinic"}/>
-              { appointments.map((value,index) => {
-                  // checkboxes.push(false)
-                  return (<TableRow date={value.date} time={value.time} doctor={value.doctor} clinic={value.clinic}/>)
-              })}
-              <tr>
-                  <td>4/3/2020</td>
-                  <td>12:00</td>
-                  <td>Dr Who</td>
-                  <td>Bath Cardiology Clinic</td>
-              </tr>
-              <tr>
-                  <td>2/3/2020</td>
-                  <td>3:30</td>
-                  <td>Dr Seuss</td>
-                  <td>Bristol Arthritis Clinic</td>
-              </tr>
-              <tr>
-                  <td>1/3/2020</td>
-                  <td>11:00</td>
-                  <td>Dr Martens</td>
-                  <td>Bath Podiatrist Clinic</td>
-              </tr>
+                  {appointments.length > 0 ?
+                      appointments.map((value,index) => {
+                      //checkboxes.push(false);
+                      return (<TableRow key={index} date={value.date} time={value.time} doctor={value.doctor} clinic={value.clinic}/>)
+                  }) : <p> No Appointments</p>}
               </tbody>
           </Table>
           <Button variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>
@@ -132,6 +122,6 @@ PatientComponent.defaultProps = {
 TableRow.defaultProps = {
     date: "",
     time: "",
-    dr: "",
+    doctor: "",
     clinic: "",
 }
