@@ -32,8 +32,7 @@ const AppointmentComp = () => {
     const cookies = new Cookies();
     const username = cookies.get("username");
     const [appointments, updateAppointments] = useState([]);
-    //const [checkstate, updateCheck] = useState([]);
-    const checkboxes = [];
+    const [checkstate, updateCheck] = useState([]);
     useEffect(() => {
         fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAppointments", {
             method: "POST",
@@ -45,21 +44,34 @@ const AppointmentComp = () => {
         }).then(function(response) {
             return response.json()
         }).then(function(data) {
+            data["appointments"].sort(function(a,b){
+                  var r1 = a.date.split('/').reverse().join('');
+                  var r2 = b.date.split('/').reverse().join('');
+                  var t1 = a.time.split(':').join('');
+                  var t2 = b.time.split(':').join('');
+                  return r1 > r2 ? 1 : r1 < r2 ? -1 : t1 > t2 ? 1 : 0;
+              }
+            );
+            let checkboxes = [];
+            for (let i = 0; i < data["appointments"].length; i++) {
+                checkboxes.push(false);
+            }
+            updateCheck(checkboxes);
             updateAppointments(data["appointments"]);
-            console.log(data)
         });
     }, []);
 
-    appointments.sort(function(a,b){
-        var r1 = a.date.split('/').reverse().join('');
-        var r2 = b.date.split('/').reverse().join('');
-        console.log(r1)
-        console.log(r2)
-        console.log("##")
-        return r1 > r2 ? 1 : r1 < r2 ? -1 : 0;
-      }
-
-    );
+    const cancelHandler = () => {
+        for(let i = 0; i<checkstate.length; i++){
+            if (checkstate[i]){
+                // put in warning making sure they want to remove
+                // if still yes then push the request to the database.
+                // put tag in html { doubleCheck ? <warning/> : <></> }
+                // write the function that makes the pop up box that has either yes or no
+                console.log(appointments[i]);
+            }
+        }
+    }
 
     // change the values below dynamically using .map to dynamically create
     // the html for the values queried from the database
@@ -82,12 +94,19 @@ const AppointmentComp = () => {
               <tbody>
                   {appointments.length > 0 ?
                       appointments.map((value,index) => {
-                      //checkboxes.push(false);
-                      return (<TableRow key={index} date={value.date} time={value.time} doctor={value.doctor} clinic={value.clinic}/>)
+                      return (<TableRow key={index}
+                                        checkIndex={index}
+                                        date={value.date}
+                                        time={value.time}
+                                        doctor={value.doctor}
+                                        clinic={value.clinic}
+                                        checkboxes={checkstate}
+                                        updateCheck={updateCheck}
+                      />)
                   }) : <p> No Appointments</p>}
               </tbody>
           </Table>
-          <Button variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>
+          <Button onClick={() => {cancelHandler()}} variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>
           <Button variant="dark" style={{ marginLeft: "10px" }}>Request Call</Button>
       </div>
     )
@@ -103,15 +122,22 @@ const AvailabilityComp = () => {
     )
 }
 
-const TableRow = (props) => (
-  <tr>
-      <td>{props.date}</td>
-      <td>{props.time}</td>
-      <td>{props.doctor}</td>
-      <td>{props.clinic}</td>
-      <td><Form.Check></Form.Check></td>
-  </tr>
-)
+// pass the checkbox handler through as a prop
+const TableRow = (props) => {
+    const checkHandler = (index) => {
+        let cpy = props.checkboxes;
+        cpy[index] = !cpy[index]
+        props.updateCheck(cpy)
+    }
+
+    return (<tr>
+        <td>{props.date}</td>
+        <td>{props.time}</td>
+        <td>{props.doctor}</td>
+        <td>{props.clinic}</td>
+        <td><Form.Check onChange={e => checkHandler(props.checkIndex)}/></td>
+    </tr>)
+}
 
 export default PatientComponent
 
@@ -124,4 +150,6 @@ TableRow.defaultProps = {
     time: "",
     doctor: "",
     clinic: "",
+    checkboxes: [],
+    updateCheck: () => {console.log("wrong")}
 }
