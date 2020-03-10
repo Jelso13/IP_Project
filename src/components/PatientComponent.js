@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { Table, Button, Form } from "react-bootstrap"
 import Cookies from "universal-cookie"
 import Calendar from "rc-calendar"
+import Popup from "reactjs-popup";
 
 const PatientComponent = (props) => {
     if (props.currentTab === "home") {
@@ -33,6 +34,7 @@ const AppointmentComp = () => {
     const username = cookies.get("username");
     const [appointments, updateAppointments] = useState([]);
     const [checkstate, updateCheck] = useState([]);
+    const [doubleCheck, updateDoubleCheck] = useState(false);
     useEffect(() => {
         fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAppointments", {
             method: "POST",
@@ -68,7 +70,9 @@ const AppointmentComp = () => {
                 // if still yes then push the request to the database.
                 // put tag in html { doubleCheck ? <warning/> : <></> }
                 // write the function that makes the pop up box that has either yes or no
+                updateDoubleCheck(true);
                 console.log(appointments[i]);
+                return(doubleCheck ? <Popup modal trigger={<h1>This is a test</h1>}>content</Popup> : <></>);
             }
         }
     }
@@ -103,11 +107,23 @@ const AppointmentComp = () => {
                                         checkboxes={checkstate}
                                         updateCheck={updateCheck}
                       />)
-                  }) : <p> No Appointments</p>}
+                      }) : <TableRow date={""}/>}
               </tbody>
           </Table>
-          <Button onClick={() => {cancelHandler()}} variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>
+          {!doubleCheck ? <Popup modal trigger={<Button onClick={() => {cancelHandler()}} variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>} position="">
+              <h1>Are you sure you want to make these changes?</h1>
+              <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"}}>
+
+              <Button variant={"dark"}>Back</Button>
+              <Button variant={"dark"}>Accept</Button>
+              </div>
+          </Popup> : <></>}
           <Button variant="dark" style={{ marginLeft: "10px" }}>Request Call</Button>
+
       </div>
     )
 }
@@ -124,6 +140,15 @@ const AvailabilityComp = () => {
 
 // pass the checkbox handler through as a prop
 const TableRow = (props) => {
+    if(props.date === ""){
+        return (<tr>
+            <td>No Appointments</td>
+            <td>.</td>
+            <td>.</td>
+            <td>.</td>
+            <td>.</td>
+        </tr>)
+    }
     const checkHandler = (index) => {
         let cpy = props.checkboxes;
         cpy[index] = !cpy[index]
@@ -151,5 +176,6 @@ TableRow.defaultProps = {
     doctor: "",
     clinic: "",
     checkboxes: [],
-    updateCheck: () => {console.log("wrong")}
+    updateCheck: () => {console.log("wrong")},
+    updateDoubleCheck: () => {console.log("false")},
 }
