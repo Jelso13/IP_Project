@@ -4,6 +4,7 @@ import { Table, Button, Form } from "react-bootstrap"
 import Cookies from "universal-cookie"
 import Calendar from "rc-calendar"
 import Popup from "reactjs-popup";
+import { navigate } from "gatsby-link"
 
 const PatientComponent = (props) => {
     if (props.currentTab === "home") {
@@ -34,7 +35,7 @@ const AppointmentComp = () => {
     const username = cookies.get("username");
     const [appointments, updateAppointments] = useState([]);
     const [checkstate, updateCheck] = useState([]);
-    const [doubleCheck, updateDoubleCheck] = useState(false);
+    const [doubleCheck, updateDoubleCheck] = useState(true);
     useEffect(() => {
         fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAppointments", {
             method: "POST",
@@ -70,11 +71,22 @@ const AppointmentComp = () => {
                 // if still yes then push the request to the database.
                 // put tag in html { doubleCheck ? <warning/> : <></> }
                 // write the function that makes the pop up box that has either yes or no
-                updateDoubleCheck(true);
-                console.log(appointments[i]);
-                return(doubleCheck ? <Popup modal trigger={<h1>This is a test</h1>}>content</Popup> : <></>);
+                fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateRequest", {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(appointments[i]),
+                }).then(function(response) {
+                    return response.json()
+                }).then(function(data) {
+                    console.log(data);
+                })
+                //console.log(appointments[i]);
             }
         }
+        updateDoubleCheck(false);
     }
 
     // change the values below dynamically using .map to dynamically create
@@ -110,18 +122,20 @@ const AppointmentComp = () => {
                       }) : <TableRow date={""}/>}
               </tbody>
           </Table>
-          {!doubleCheck ? <Popup modal trigger={<Button onClick={() => {cancelHandler()}} variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>} position="">
-              <h1>Are you sure you want to make these changes?</h1>
+          <Popup modal trigger={<Button variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>} position="left center">
+              {doubleCheck ?
+              <div style={{backgroundColor:"#818cf7"}}>
+              <h1 style={{textAlign:"center"}}>Are you sure you want to make these changes?</h1>
               <div
                 style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center"}}>
-
-              <Button variant={"dark"}>Back</Button>
-              <Button variant={"dark"}>Accept</Button>
+              <Button variant={"dark"} onClick={() => cancelHandler()} style={{margin:"50px"}}>Accept</Button>
               </div>
-          </Popup> : <></>}
+              </div>
+                : <div style={{margin:"50px"}}><p>Request completed! :)</p></div>}
+          </Popup>
           <Button variant="dark" style={{ marginLeft: "10px" }}>Request Call</Button>
 
       </div>
@@ -133,7 +147,7 @@ const AvailabilityComp = () => {
     return (
       <div>
           <h1>Availability</h1>
-          <Calendar></Calendar>
+          <Calendar style={{ zIndex: 1001 }}></Calendar>
       </div>
     )
 }
