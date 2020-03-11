@@ -1,0 +1,7 @@
+                    ({value}) => {
+                        return (
+                            <input value={value}/>
+                        )
+                    }
+                }</DatePicker>
+            </div>

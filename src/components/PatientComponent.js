@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
 import { Table, Button, Form } from "react-bootstrap"
 import Cookies from "universal-cookie"
-import Calendar from "rc-calendar"
+// import Calendar from "rc-calendar"
+// import { Calendar, momentLocalizer, Views } from "react-big-calendar"
+import * as BigCalendar from "react-big-calendar";
+import events from './events'
+import * as dates from './dates'
 import Popup from "reactjs-popup";
+import moment from 'moment';
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import { navigate } from "gatsby-link"
 
 const PatientComponent = (props) => {
@@ -143,11 +149,28 @@ const AppointmentComp = () => {
 }
 
 const AvailabilityComp = () => {
+    const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
+    const [myEvents, updateMyEvents] = useState([]);
+    const [k, forceRerender] = useState(false);
+
+    const handleSelect = (event) => {
+        console.log(event);
+        let cpy = myEvents;
+        cpy.push(event);
+        updateMyEvents(cpy);
+        forceRerender(!k)
+    }
 
     return (
       <div>
           <h1>Availability</h1>
-          <Calendar style={{ zIndex: 1001 }}></Calendar>
+          <BigCalendar.Calendar
+            events={myEvents}
+            localizer={localizer}
+            style={{height: "500px", width: "95%"}}
+            selectable={true}
+            onSelectSlot={event => handleSelect(event)}
+          />
       </div>
     )
 }
