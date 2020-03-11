@@ -161,6 +161,28 @@ const AvailabilityComp = () => {
         forceRerender(!k)
     }
 
+    const handlePop = () => {
+        let cpy = myEvents;
+        cpy.pop();
+        updateMyEvents(cpy);
+        forceRerender(!k)
+    }
+
+    // const submitAvailability = () => {
+    //     fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateRequest", {
+    //         method: "POST",
+    //         mode: "cors",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         body: JSON.stringify(appointments[i]),
+    //     }).then(function(response) {
+    //         return response.json()
+    //     }).then(function(data) {
+    //         console.log(data);
+    //     })
+    // }
+
     return (
       <div>
           <h1>Availability</h1>
@@ -171,6 +193,8 @@ const AvailabilityComp = () => {
             selectable={true}
             onSelectSlot={event => handleSelect(event)}
           />
+          <Button onClick={handlePop} style={{margin:"50px"}} variant={"dark"}>Remove last</Button>
+          {/*<Button onClick={submitAvailability} style={{margin:"50px"}} variant={"dark"}>Submit Availability</Button>*/}
       </div>
     )
 }
