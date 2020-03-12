@@ -153,21 +153,39 @@ const AppointmentComp = () => {
 }
 
 const AvailabilityComp = () => {
+    const cookies = new Cookies();
+    const username = cookies.get("username");
     const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
     const [myEvents, updateMyEvents] = useState([]);
     const [currentView, changeView] = useState("day")
 
     const [k, forceRerender] = useState(false);
-
+    const now = new Date();
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate()+3);
     const handleSelect = (event) => {
-        console.log(currentView)
-        if (currentView !== "month" && currentView !== "week") {
+        const value = event.start;
+        if (currentView !== "month" && currentView !== "week" && value >= now ) {
             console.log(event);
             let cpy = myEvents;
             cpy.push(event);
             updateMyEvents(cpy);
             forceRerender(!k)
         }
+    }
+
+    const DateCell = ({ range, value, children }) => {
+        const pastStyle = {
+            width: "14.3%",
+        background: "#ccc",
+        borderRight: "solid 1px #fff",
+        }
+        return (
+          <div style={ value < now ? pastStyle  : {} }>
+              { children }
+          </div>
+        )
+
     }
 
     const handlePop = () => {
@@ -177,20 +195,49 @@ const AvailabilityComp = () => {
         forceRerender(!k)
     }
 
-    // const submitAvailability = () => {
-    //     fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateRequest", {
-    //         method: "POST",
-    //         mode: "cors",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(appointments[i]),
-    //     }).then(function(response) {
-    //         return response.json()
-    //     }).then(function(data) {
-    //         console.log(data);
-    //     })
-    // }
+    const submitAvailability = () => {
+        fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/wipeAvailability", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({"username":username}),
+        }).then((response) => {
+            console.log("here");
+            return response.json()
+        }).then((data) => {
+            console.log(data);
+            for (let i = 0; i < myEvents.length; i++) {
+                console.log("type is " + toString(typeof myEvents[i].start.getMinutes()))
+                console.log(toString(myEvents[i].start.getMinutes()).padEnd(2, "0"));
+                let formatted_date = myEvents[i].start.getDate() + "/" + (myEvents[i].start.getMonth() + 1) + "/" + myEvents[i].start.getFullYear();
+                let formatted_start = myEvents[i].start.getHours() + ":" + myEvents[i].start.getMinutes();
+                let formatted_end = myEvents[i].end.getHours() + ":" + myEvents[i].end.getMinutes();
+
+                const req = {
+                    "username": username,
+                    "timeStart": formatted_start,
+                    "timeEnd": formatted_end,
+                    "date": formatted_date
+                }
+                fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateAvailability", {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(req),
+                }).then((response) => {
+                    return response.json()
+                }).then((data) => {
+                    console.log(data);
+                })
+            }
+        }).catch((err) => {
+            console.warn(err);
+        })
+    }
 
     return (
       <div>
@@ -199,18 +246,25 @@ const AvailabilityComp = () => {
             events={myEvents}
             localizer={localizer}
             defaultView={"day"}
-            views={['day', 'week', 'month']}
+            views={['day', 'month', 'agenda']}
             style={{height: "500px", width: "95%"}}
             selectable={true}
             onView={(val) => {
                 changeView(val)
             }}
+            min={new Date('2017, 1, 7, 07:00')}
+            max={new Date('2017, 1, 7, 19:00')}
+            components={{
+                dateCellWrapper: DateCell
+            }}
             onSelectSlot={event => handleSelect(event)}
           />
-          <Button onClick={handlePop} style={{margin:"50px"}} variant={"dark"}>Undo</Button>
-          {/*<Button onClick={submitAvailability} style={{margin:"50px"}} variant={"dark"}>Submit Availability</Button>*/}
+          <Button onClick={e => handlePop()} style={{margin:"50px"}} variant={"dark"}>Undo</Button>
+          {<Button onClick={e => submitAvailability()} style={{margin:"50px"}} variant={"dark"}>Submit Availability</Button>}
+          <p>You can add availability for 3 days time. Drag over times in the day view to select a section of time</p>
+
       </div>
-    )
+    );
 }
 
 // pass the checkbox handler through as a prop
@@ -240,9 +294,9 @@ const TableRow = (props) => {
 }
 
 const SpinnerComp = () => (
-  <Container fluidi>
+  <Container fluid>
       <Row>
-          <Col style={{textAlign: "centers"}}>
+          <Col style={{textAlign: "center"}}>
             <Spinner animation={"border"} />
           </Col>
       </Row>
