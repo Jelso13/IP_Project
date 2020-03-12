@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import "bootstrap/dist/css/bootstrap.min.css"
-import { Table, Button, Form } from "react-bootstrap"
+import { Table, Button, Form, Spinner, Container, Row, Col } from "react-bootstrap"
 import Cookies from "universal-cookie"
 // import Calendar from "rc-calendar"
 // import { Calendar, momentLocalizer, Views } from "react-big-calendar"
@@ -42,7 +42,10 @@ const AppointmentComp = () => {
     const [appointments, updateAppointments] = useState([]);
     const [checkstate, updateCheck] = useState([]);
     const [doubleCheck, updateDoubleCheck] = useState(true);
+    const [showSpinner, toggleSpinner] = useState(false);
+
     useEffect(() => {
+        toggleSpinner(true);
         fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAppointments", {
             method: "POST",
             mode: "cors",
@@ -65,6 +68,7 @@ const AppointmentComp = () => {
             for (let i = 0; i < data["appointments"].length; i++) {
                 checkboxes.push(false);
             }
+            toggleSpinner(false);
             updateCheck(checkboxes);
             updateAppointments(data["appointments"]);
         });
@@ -103,7 +107,7 @@ const AppointmentComp = () => {
     return (
       <div>
           <h1>Appointment</h1>
-          <Table striped bordered hover size="sm">
+         {showSpinner ? <SpinnerComp /> : (<Table striped bordered hover size="sm">
               <thead>
               <tr>
                   <th>Date</th>
@@ -127,7 +131,7 @@ const AppointmentComp = () => {
                       />)
                       }) : <TableRow date={""}/>}
               </tbody>
-          </Table>
+          </Table>)}
           <Popup modal trigger={<Button variant="dark" style={{ margin: "10px" }}>Request Cancellation</Button>} position="left center">
               {doubleCheck ?
               <div style={{backgroundColor:"#818cf7"}}>
@@ -151,14 +155,19 @@ const AppointmentComp = () => {
 const AvailabilityComp = () => {
     const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
     const [myEvents, updateMyEvents] = useState([]);
+    const [currentView, changeView] = useState("day")
+
     const [k, forceRerender] = useState(false);
 
     const handleSelect = (event) => {
-        console.log(event);
-        let cpy = myEvents;
-        cpy.push(event);
-        updateMyEvents(cpy);
-        forceRerender(!k)
+        console.log(currentView)
+        if (currentView !== "month" && currentView !== "week") {
+            console.log(event);
+            let cpy = myEvents;
+            cpy.push(event);
+            updateMyEvents(cpy);
+            forceRerender(!k)
+        }
     }
 
     const handlePop = () => {
@@ -189,11 +198,16 @@ const AvailabilityComp = () => {
           <BigCalendar.Calendar
             events={myEvents}
             localizer={localizer}
+            defaultView={"day"}
+            views={['day', 'week', 'month']}
             style={{height: "500px", width: "95%"}}
             selectable={true}
+            onView={(val) => {
+                changeView(val)
+            }}
             onSelectSlot={event => handleSelect(event)}
           />
-          <Button onClick={handlePop} style={{margin:"50px"}} variant={"dark"}>Remove last</Button>
+          <Button onClick={handlePop} style={{margin:"50px"}} variant={"dark"}>Undo</Button>
           {/*<Button onClick={submitAvailability} style={{margin:"50px"}} variant={"dark"}>Submit Availability</Button>*/}
       </div>
     )
@@ -224,6 +238,16 @@ const TableRow = (props) => {
         <td><Form.Check onChange={e => checkHandler(props.checkIndex)}/></td>
     </tr>)
 }
+
+const SpinnerComp = () => (
+  <Container fluidi>
+      <Row>
+          <Col style={{textAlign: "centers"}}>
+            <Spinner animation={"border"} />
+          </Col>
+      </Row>
+  </Container>
+)
 
 export default PatientComponent
 

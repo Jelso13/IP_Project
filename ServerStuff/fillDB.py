@@ -44,19 +44,49 @@ for i in range(len(receptionUsernames)):
     req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateUser", json=my_json)
 
 doctors = ["Dr Who", "Dr Watson", "Dr Seuss", "Dr Smith", "Dr Jones", "Dr Singh"]
+for i in doctors:
+    my_json = {
+        "username": i
+    }
+    req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDoctor", json=my_json)
+
 clinics = ["Anaesthetics", "Cardiology", "Diagnostic imaging", "Ear nose and throat (ENT)", "Haematology", "Neurology", "Oncology", "Physiotherapy"]
 
 for i in range(len(patientUsernames)):
     for j in range(random.randrange(3,10)):
-        time = str(random.randrange(8, 20))+":"+str(random.choice(["00", "30"]))
+        sMins = str(random.choice(["00", "30"]))
+        sHours = random.randrange(8, 20)
+        eMins = ""
+        eHours = sHours
+        if sMins == "00":
+            eMins = "30"
+        else:
+            eMins = "00"
+            eHours +=1
+        eHours = str(eHours)
+        sHours = str(sHours)
+        time = sHours+":"+sMins
+        etime = eHours+":"+eMins
         date = str(random.randrange(1,29)).rjust(2,"0")+"/"+str(random.randrange(int(currentDate[1]),13)).rjust(2,"0")+"/2020"
+        doc = random.choice(doctors)
+        clinic = random.choice(clinics)
+
         my_json = {
             "username": patientUsernames[i],
             "time": time,
             "date": date,
-            "doctor": random.choice(doctors),
-            "clinic": random.choice(clinics)
+            "doctor": doc,
+            "clinic": clinic
         }
+        doc_json = {
+            "username": doc,
+            "stime": time,
+            "etime": etime,
+            "date": date,
+            "patient": patientUsernames[i]
+        }
+        dreq = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment", json=doc_json)
+        # add doctor appointment too
         req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment", json=my_json)
 
 
