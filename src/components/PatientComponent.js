@@ -13,15 +13,17 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { navigate } from "gatsby-link"
 
 const PatientComponent = (props) => {
-    if (props.currentTab === "home") {
-        return (<HomeComp/>)
-    } else if (props.currentTab === "appointments") {
-        return (<AppointmentComp/>)
-    } else if (props.currentTab === "availability") {
-        return (<AvailabilityComp/>)
-    } else {
-        return (<h1>Error</h1>)
-    }
+    // height: calc(100% - x pixels)
+
+    return (
+      <div>
+          {props.currentTab === "home" ? <HomeComp /> :
+            props.currentTab === "appointments" ? <AppointmentComp /> :
+            props.currentTab === "availability" ? <AvailabilityComp /> :
+            <h1>Error</h1>}
+      </div>
+    )
+
 }
 
 const HomeComp = () => {
@@ -174,7 +176,7 @@ const AvailabilityComp = () => {
         }
     }
 
-    const DateCell = ({ range, value, children }) => {
+    const DateCell = ({ value, children }) => {
         const pastStyle = {
             width: "14.3%",
         background: "#ccc",
@@ -259,9 +261,9 @@ const AvailabilityComp = () => {
             }}
             onSelectSlot={event => handleSelect(event)}
           />
-          <Button onClick={e => handlePop()} style={{margin:"50px"}} variant={"dark"}>Undo</Button>
-          {<Button onClick={e => submitAvailability()} style={{margin:"50px"}} variant={"dark"}>Submit Availability</Button>}
-          <p>You can add availability for 3 days time. Drag over times in the day view to select a section of time</p>
+          <Button onClick={e => handlePop()} style={{marginRight:"50px", marginTop:"20px"}} variant={"dark"}>Undo</Button>
+          {<Button onClick={e => submitAvailability()} style={{marginRight:"50px", marginTop:"20px"}} variant={"dark"}>Submit Availability</Button>}
+          <p style={{marginTop: 0, padding: 0}}>You can add availability for 3 days time. Drag over times in the day view to select a section of time</p>
 
       </div>
     );
