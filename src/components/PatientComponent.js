@@ -224,6 +224,7 @@ const AvailabilityComp = () => {
   const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
   const [myEvents, updateMyEvents] = useState([])
   const [currentView, changeView] = useState("day")
+    const [submitted, hasSubmitted] = useState(false);
 
   const [k, forceRerender] = useState(false)
   const now = new Date()
@@ -311,7 +312,8 @@ const AvailabilityComp = () => {
               return response.json()
             })
             .then(data => {
-              console.log(data)
+              console.log(data);
+                hasSubmitted(true);
             })
         }
       })
@@ -356,6 +358,7 @@ const AvailabilityComp = () => {
           Submit Availability
         </Button>
       }
+        {submitted ? <h1>Submission sent</h1> : <></>}
       <p style={{ marginTop: 0, padding: 0 }}>
         You can add availability for 3 days time. Drag over times in the day
         view to select a section of time
