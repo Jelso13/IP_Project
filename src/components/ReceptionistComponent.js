@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Cookies from "universal-cookie"
-import { Button, Col, Container, Row, Table } from "react-bootstrap"
+import { Button, Col, Container, Form, Row, Spinner, Table } from "react-bootstrap"
 
 const ReceptionistComponent = (props) => {
     if (props.currentTab === "home") {
@@ -29,6 +29,32 @@ const HomeComp = () => {
 
 const CallReqComp = () => {
 
+    const [requests, setRequests] = useState([]);
+    const [showSpinner, toggleSpinner] = useState(false)
+
+    useEffect(() => {
+        toggleSpinner(true)
+        fetch(
+          "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetCallRequests",
+          {
+              method: "POST",
+              mode: "cors",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ "":""}),
+          }
+        )
+          .then(function(response) {
+              return response.json()
+          })
+          .then(function(data) {
+              setRequests(data["data"]);
+              console.log(data);
+              toggleSpinner(false);
+          })
+    }, [])
+
     // change the values below dynamically using .map to dynamically create
     // the html for the values queried from the database
     // the values from the database are then obtained by manually searching
@@ -37,36 +63,65 @@ const CallReqComp = () => {
     return (
       <div>
           <h1>Call Requests</h1>
-          <Table striped bordered hover size="sm">
-              <thead>
-              <tr>
-                  <th>Request Time</th>
-                  <th>Name</th>
-                  <th>Phone Number</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                  <td>11:00</td>
-                  <td>Example User 1</td>
-                  <td>09876544322</td>
-              </tr>
-              <tr>
-                  <td>9:00</td>
-                  <td>Example User 2</td>
-                  <td>074567876543</td>
-              </tr>
-              <tr>
-                  <td>15:00</td>
-                  <td>Example User 3</td>
-                  <td>0753456787654</td>
-              </tr>
-              </tbody>
-          </Table>
-          <Button>Remove Request</Button>
+          {showSpinner ? <SpinnerComp/> :
+            <div>
+                <Table striped bordered hover size="sm">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {requests.length > 0 ? (
+                      requests.map((value, index) => {
+                          return (
+                            <TableRow
+                              key={index}
+                              username={value.username}
+                              number={value.number}
+                            />
+                          )
+                      })
+                    ) : (
+                      <TableRow username={""}/>
+                    )}
+                    </tbody>
+                </Table>
+                < Button > Remove Request</Button>
+            </div>
+          }
       </div>
     )
 }
+
+const TableRow = props => {
+    console.log(props);
+    if (props.username === "") {
+        return (
+          <tr>
+              <td>No Requests</td>
+              <td>.</td>
+          </tr>
+        )
+    }
+    return (
+      <tr>
+          <td>{props.username}</td>
+          <td>{props.number}</td>
+      </tr>
+    )
+}
+
+const SpinnerComp = () => (
+  <Container fluid>
+      <Row>
+          <Col style={{ textAlign: "center" }}>
+              <Spinner animation={"border"} />
+          </Col>
+      </Row>
+  </Container>
+)
 
 const AppointmentManagementComp = () => {
 
