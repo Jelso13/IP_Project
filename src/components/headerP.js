@@ -13,6 +13,7 @@ const HeaderPat = (props) => {
         <Nav.Link onClick={() => props.changeTab("home")}>Home</Nav.Link>
         <Nav.Link onClick={() => props.changeTab("appointments")}>Appointments</Nav.Link>
         <Nav.Link onClick={() => props.changeTab("availability")}>Availability</Nav.Link>
+        <Nav.Link onClick={() => props.changeTab("reqCall")}>Request Call</Nav.Link>
       </Nav>
       <Nav>
         <Nav.Link onClick={() => {
