@@ -29,8 +29,9 @@ const HomeComp = () => {
 
 const CallReqComp = () => {
 
-    const [requests, setRequests] = useState([]);
+    const [requests, setRequests] = useState([])
     const [showSpinner, toggleSpinner] = useState(false)
+    const [checkstate, updateCheck] = useState([])
 
     useEffect(() => {
         toggleSpinner(true)
@@ -42,8 +43,8 @@ const CallReqComp = () => {
               headers: {
                   "Content-Type": "application/json",
               },
-              body: JSON.stringify({ "":""}),
-          }
+              body: JSON.stringify({ "": "" }),
+          },
         )
           .then(function(response) {
               return response.json()
@@ -51,9 +52,58 @@ const CallReqComp = () => {
           .then(function(data) {
               setRequests(data["data"]);
               console.log(data);
-              toggleSpinner(false);
+
+              console.log("this is the requests" + requests)
+
+              let checkboxes = []
+              for (let i = 0; i < data.length; i++) {
+                  checkboxes.push(false)
+              }
+              toggleSpinner(false)
+              updateCheck(checkboxes)
           })
     }, [])
+
+    const cancelHandler = () => {
+        console.log("in cancelhandler");
+        for (let i = 0; i < checkstate.length; i++) {
+
+            if (checkstate[i]) {
+                console.log(requests[i]);
+                console.log("found checked request");
+                // put in warning making sure they want to remove
+                // if still yes then push the request to the database.
+                // put tag in html { doubleCheck ? <warning/> : <></> }
+                // write the function that makes the pop up box that has either yes or no
+                fetch(
+                  "https://europe-west2-sustained-node-257616.cloudfunctions.net/DeleteRequest",
+                  {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(requests[i]),
+                  },
+                )
+                  .then(function(response) {
+                      return response.json()
+                  })
+                  .then(function(data) {
+                      console.log(data);
+                      const r = [];
+                      for (let j = 0; j < requests.length; j++) {
+                          if (j!=i) {
+                              r.push(requests[j]);
+                          }
+                      }
+                      setRequests(r);
+
+                  })
+                //console.log(appointments[i]);
+            }
+        }
+    }
 
     // change the values below dynamically using .map to dynamically create
     // the html for the values queried from the database
@@ -78,8 +128,11 @@ const CallReqComp = () => {
                           return (
                             <TableRow
                               key={index}
+                              checkIndex={index}
                               username={value.username}
                               number={value.number}
+                              checkboxes={checkstate}
+                              updateCheck={updateCheck}
                             />
                           )
                       })
@@ -88,16 +141,20 @@ const CallReqComp = () => {
                     )}
                     </tbody>
                 </Table>
-                < Button > Remove Request</Button>
+                < Button onClick={() =>
+                    cancelHandler()
+                }> Remove Request</Button>
             </div>
           }
       </div>
     )
 }
 
+
 const TableRow = props => {
-    console.log(props);
+    console.log(props)
     if (props.username === "") {
+        console.log("hit")
         return (
           <tr>
               <td>No Requests</td>
@@ -105,10 +162,20 @@ const TableRow = props => {
           </tr>
         )
     }
+
+    const checkHandler = index => {
+        let cpy = props.checkboxes
+        cpy[index] = !cpy[index]
+        props.updateCheck(cpy)
+    }
+
     return (
       <tr>
           <td>{props.username}</td>
           <td>{props.number}</td>
+          <td>
+              <Form.Check onChange={e => checkHandler(props.checkIndex)}/>
+          </td>
       </tr>
     )
 }
@@ -117,7 +184,7 @@ const SpinnerComp = () => (
   <Container fluid>
       <Row>
           <Col style={{ textAlign: "center" }}>
-              <Spinner animation={"border"} />
+              <Spinner animation={"border"}/>
           </Col>
       </Row>
   </Container>
@@ -189,8 +256,10 @@ const AppointmentManagementComp = () => {
                       </Table>
                   </Col></Row></Container>
           <Button>Commit Changes</Button>
-          <p style={{marginTop:"50px"}}>// put a clinic selection button here in order to get the cancellations for specific clinics</p>
-          <p> ** have it so that when a cancellation on the left is selected a possible time is presented for that slot</p>
+          <p style={{ marginTop: "50px" }}>// put a clinic selection button here in order to get the cancellations for
+              specific clinics</p>
+          <p> ** have it so that when a cancellation on the left is selected a possible time is presented for that
+              slot</p>
           <p> // possibly have an undo action button but this can be done after</p>
       </div>
     )
