@@ -211,9 +211,6 @@ const AppointmentComp = () => {
           </div>
         )}
       </Popup>
-      <Button variant="dark" style={{ marginLeft: "10px" }}>
-        Request Call
-      </Button>
     </div>
   )
 }

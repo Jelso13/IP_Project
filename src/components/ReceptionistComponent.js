@@ -192,42 +192,81 @@ const SpinnerComp = () => (
 
 const AppointmentManagementComp = () => {
 
+    const [requests, setRequests] = useState([])
+    const [showSpinner, toggleSpinner] = useState(false)
+    const [checkstate, updateCheck] = useState([])
+
+    useEffect(() => {
+        toggleSpinner(true)
+        fetch(
+          "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetCancellationRequests",
+          {
+              method: "POST",
+              mode: "cors",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ "": "" }),
+          },
+        )
+          .then(function(response) {
+              return response.json()
+          })
+          .then(function(data) {
+              setRequests(data["data"]);
+              console.log(data);
+
+              console.log("this is the requests" + requests)
+
+              let checkboxes = []
+              for (let i = 0; i < data.length; i++) {
+                  checkboxes.push(false)
+              }
+              toggleSpinner(false)
+              updateCheck(checkboxes)
+          })
+    }, [])
+
     return (
       <div>
           <h1>Appointment Management</h1>
           <Container fluid>
               <Row>
                   <Col>
-                      <h>Cancellations</h>
+                      <h5 style={{margin:"5px"}}>Cancellations</h5>
                       <Table striped bordered hover size="sm">
                           <thead>
                           <tr>
+                              <th>Username</th>
                               <th>Date</th>
                               <th>Time</th>
                               <th>Doctor</th>
                           </tr>
                           </thead>
                           <tbody>
-                          <tr>
-                              <td>4/3/2020</td>
-                              <td>12:00</td>
-                              <td>Dr Who</td>
-                          </tr>
-                          <tr>
-                              <td>2/3/2020</td>
-                              <td>3:30</td>
-                              <td>Dr Seuss</td>
-                          </tr>
-                          <tr>
-                              <td>1/3/2020</td>
-                              <td>11:00</td>
-                              <td>Dr Martens</td>
-                          </tr>
+                          {requests.length > 0 ? (
+                            requests.map((value, index) => {
+                                return (
+                                  <CancelTableRow
+                                    key={index}
+                                    checkIndex={index}
+                                    username={value.username}
+                                    date={value.date}
+                                    time={value.time}
+                                    doctor={value.doctor}
+                                    checkboxes={checkstate}
+                                    updateCheck={updateCheck}
+                                  />
+                                )
+                            })
+                          ) : (
+                            <CancelTableRow username={""}/>
+                          )}
                           </tbody>
                       </Table>
                   </Col>
                   <Col>
-                      <h>Possible Alternative Patients</h>
+                      <h5 style={{margin:"5px"}}>Possible Alternative Patients</h5>
                       <Table striped bordered hover size="sm">
                           <thead>
                           <tr>
@@ -256,12 +295,39 @@ const AppointmentManagementComp = () => {
                       </Table>
                   </Col></Row></Container>
           <Button>Commit Changes</Button>
-          <p style={{ marginTop: "50px" }}>// put a clinic selection button here in order to get the cancellations for
-              specific clinics</p>
-          <p> ** have it so that when a cancellation on the left is selected a possible time is presented for that
-              slot</p>
-          <p> // possibly have an undo action button but this can be done after</p>
       </div>
+    )
+}
+
+const CancelTableRow = props => {
+    console.log(props)
+    if (props.username === "") {
+        return (
+          <tr>
+              <td>No Requests</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+          </tr>
+        )
+    }
+
+    const checkHandler = index => {
+        let cpy = props.checkboxes
+        cpy[index] = !cpy[index]
+        props.updateCheck(cpy)
+    }
+
+    return (
+      <tr>
+          <td>{props.username}</td>
+          <td>{props.date}</td>
+          <td>{props.time}</td>
+          <td>{props.doctor}</td>
+          <td>
+              <Form.Check onChange={e => checkHandler(props.checkIndex)}/>
+          </td>
+      </tr>
     )
 }
 
