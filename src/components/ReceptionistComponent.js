@@ -50,8 +50,8 @@ const CallReqComp = () => {
               return response.json()
           })
           .then(function(data) {
-              setRequests(data["data"]);
-              console.log(data);
+              setRequests(data["data"])
+              console.log(data)
 
               console.log("this is the requests" + requests)
 
@@ -65,12 +65,12 @@ const CallReqComp = () => {
     }, [])
 
     const cancelHandler = () => {
-        console.log("in cancelhandler");
+        console.log("in cancelhandler")
         for (let i = 0; i < checkstate.length; i++) {
 
             if (checkstate[i]) {
-                console.log(requests[i]);
-                console.log("found checked request");
+                console.log(requests[i])
+                console.log("found checked request")
                 // put in warning making sure they want to remove
                 // if still yes then push the request to the database.
                 // put tag in html { doubleCheck ? <warning/> : <></> }
@@ -90,14 +90,14 @@ const CallReqComp = () => {
                       return response.json()
                   })
                   .then(function(data) {
-                      console.log(data);
-                      const r = [];
+                      console.log(data)
+                      const r = []
                       for (let j = 0; j < requests.length; j++) {
-                          if (j!=i) {
-                              r.push(requests[j]);
+                          if (j != i) {
+                              r.push(requests[j])
                           }
                       }
-                      setRequests(r);
+                      setRequests(r)
 
                   })
                 //console.log(appointments[i]);
@@ -142,7 +142,7 @@ const CallReqComp = () => {
                     </tbody>
                 </Table>
                 < Button onClick={() =>
-                    cancelHandler()
+                  cancelHandler()
                 }> Remove Request</Button>
             </div>
           }
@@ -213,8 +213,8 @@ const AppointmentManagementComp = () => {
               return response.json()
           })
           .then(function(data) {
-              setRequests(data["data"]);
-              console.log(data);
+              setRequests(data["data"])
+              console.log(data)
 
               console.log("this is the requests" + requests)
 
@@ -225,76 +225,88 @@ const AppointmentManagementComp = () => {
               toggleSpinner(false)
               updateCheck(checkboxes)
           })
+
     }, [])
+
+    const changeHandler = () => {
+        for (let i = 0; i < checkstate.length; i++) {
+            if (checkstate[i]) {
+                console.log(requests[i])
+            }
+        }
+    }
 
     return (
       <div>
-          <h1>Appointment Management</h1>
-          <Container fluid>
-              <Row>
-                  <Col>
-                      <h5 style={{margin:"5px"}}>Cancellations</h5>
-                      <Table striped bordered hover size="sm">
-                          <thead>
-                          <tr>
-                              <th>Username</th>
-                              <th>Date</th>
-                              <th>Time</th>
-                              <th>Doctor</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          {requests.length > 0 ? (
-                            requests.map((value, index) => {
-                                return (
-                                  <CancelTableRow
-                                    key={index}
-                                    checkIndex={index}
-                                    username={value.username}
-                                    date={value.date}
-                                    time={value.time}
-                                    doctor={value.doctor}
-                                    checkboxes={checkstate}
-                                    updateCheck={updateCheck}
-                                  />
-                                )
-                            })
-                          ) : (
-                            <CancelTableRow username={""}/>
-                          )}
-                          </tbody>
-                      </Table>
-                  </Col>
-                  <Col>
-                      <h5 style={{margin:"5px"}}>Possible Alternative Patients</h5>
-                      <Table striped bordered hover size="sm">
-                          <thead>
-                          <tr>
-                              <th>Date</th>
-                              <th>Time</th>
-                              <th>Patient Name</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <tr>
-                              <td>4/3/2020</td>
-                              <td>12:00</td>
-                              <td>Example user 1</td>
-                          </tr>
-                          <tr>
-                              <td>4/3/2020</td>
-                              <td>12:00</td>
-                              <td>Example user 2</td>
-                          </tr>
-                          <tr>
-                              <td>4/3/2020</td>
-                              <td>12:00</td>
-                              <td>Example user 3</td>
-                          </tr>
-                          </tbody>
-                      </Table>
-                  </Col></Row></Container>
-          <Button>Commit Changes</Button>
+          {showSpinner ? <SpinnerComp/> :
+            <div>
+                <h1>Appointment Management</h1>
+                <Container fluid>
+                    <Row>
+                        <Col>
+                            <h5 style={{ margin: "5px" }}>Cancellations</h5>
+                            <Table striped bordered hover size="sm">
+                                <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Doctor</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {requests.length > 0 ? (
+                                  requests.map((value, index) => {
+                                      return (
+                                        <CancelTableRow
+                                          key={index}
+                                          checkIndex={index}
+                                          username={value.username}
+                                          date={value.date}
+                                          time={value.time}
+                                          doctor={value.doctor}
+                                          checkboxes={checkstate}
+                                          updateCheck={updateCheck}
+                                        />
+                                      )
+                                  })
+                                ) : (
+                                  <CancelTableRow username={""}/>
+                                )}
+                                </tbody>
+                            </Table>
+                        </Col>
+                        <Col>
+                            <h5 style={{ margin: "5px" }}>Possible Alternative Patients</h5>
+                            <Table striped bordered hover size="sm">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Patient Name</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>4/3/2020</td>
+                                    <td>12:00</td>
+                                    <td>Example user 1</td>
+                                </tr>
+                                <tr>
+                                    <td>4/3/2020</td>
+                                    <td>12:00</td>
+                                    <td>Example user 2</td>
+                                </tr>
+                                <tr>
+                                    <td>4/3/2020</td>
+                                    <td>12:00</td>
+                                    <td>Example user 3</td>
+                                </tr>
+                                </tbody>
+                            </Table>
+                        </Col></Row></Container>
+                <Button onClick={() => changeHandler()}>Commit Changes</Button>
+            </div>}
       </div>
     )
 }
