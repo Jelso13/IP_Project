@@ -195,6 +195,7 @@ const AppointmentManagementComp = () => {
     const [requests, setRequests] = useState([])
     const [showSpinner, toggleSpinner] = useState(false)
     const [checkstate, updateCheck] = useState([])
+    const [radioState, changeRadio] = useState("")
 
     useEffect(() => {
         toggleSpinner(true)
@@ -229,12 +230,14 @@ const AppointmentManagementComp = () => {
     }, [])
 
     const changeHandler = () => {
-        for (let i = 0; i < checkstate.length; i++) {
-            if (checkstate[i]) {
-                console.log(requests[i])
-            }
-        }
+        console.log(radioState);
     }
+
+    const handleOptionChange = (changeEvent) => {
+        changeRadio(changeEvent.target.value);
+        console.log(radioState);
+    };
+
 
     return (
       <div>
@@ -265,8 +268,8 @@ const AppointmentManagementComp = () => {
                                           date={value.date}
                                           time={value.time}
                                           doctor={value.doctor}
-                                          checkboxes={checkstate}
-                                          updateCheck={updateCheck}
+                                          handleChange={handleOptionChange}
+                                          radState={radioState}
                                         />
                                       )
                                   })
@@ -312,7 +315,6 @@ const AppointmentManagementComp = () => {
 }
 
 const CancelTableRow = props => {
-    console.log(props)
     if (props.username === "") {
         return (
           <tr>
@@ -324,21 +326,24 @@ const CancelTableRow = props => {
         )
     }
 
-    const checkHandler = index => {
-        let cpy = props.checkboxes
-        cpy[index] = !cpy[index]
-        props.updateCheck(cpy)
-    }
-
     return (
       <tr>
           <td>{props.username}</td>
           <td>{props.date}</td>
           <td>{props.time}</td>
           <td>{props.doctor}</td>
-          <td>
-              <Form.Check onChange={e => checkHandler(props.checkIndex)}/>
-          </td>
+          <td><div className="form-check">
+              <label>
+                  <input
+                    type="radio"
+                    name="react-tips"
+                    value={"option"+props.checkIndex.toString()}
+                    checked={props.radState === "option"+props.checkIndex.toString()}
+                    className="form-check-input"
+                    onChange={props.handleChange}
+                  />
+              </label>
+          </div></td>
       </tr>
     )
 }
