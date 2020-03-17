@@ -194,10 +194,10 @@ const AppointmentManagementComp = () => {
 
     const [requests, setRequests] = useState([])
     const [showSpinner, toggleSpinner] = useState(false)
-    const [checkstate, updateCheck] = useState([])
     const [radioState, changeRadio] = useState({})
     const [radioStateA, changeRadioA] = useState({})
     const [alternatives, setAlt] = useState([])
+    const [confirmed, setConfirmed] = useState(false);
 
 
     useEffect(() => {
@@ -220,7 +220,8 @@ const AppointmentManagementComp = () => {
               setRequests(data["data"])
               toggleSpinner(false)
           })
-    }, [])
+        setConfirmed(false);
+    }, [confirmed])
 
     useEffect(() => {
         if (radioState.length > 0) {
@@ -252,8 +253,17 @@ const AppointmentManagementComp = () => {
     }, [radioState])
 
     const changeHandler = () => {
-        console.log(radioState)
-        console.log(radioStateA)
+        if (!(radioState.length == undefined || radioStateA.length == undefined)){
+            setConfirmed(true);
+            // update the alternate appointment to the cancellation one
+            // also in doctor collection
+            // delete the cancellation appointment
+            // create notice request for both patients
+            // read this notice request from front page.
+            console.log("yes")
+            console.log(radioState)
+            console.log(radioStateA)
+        }
     }
 
     const handleOptionChange = (changeEvent) => {
@@ -346,7 +356,7 @@ const AppointmentManagementComp = () => {
                                 </tbody>
                             </Table>
                         </Col></Row></Container>
-                <Button onClick={() => changeHandler()}>Commit Changes</Button>
+                <Button variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with alternative</Button>
             </div>}
       </div>
     )
