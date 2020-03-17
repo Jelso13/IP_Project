@@ -196,6 +196,9 @@ const AppointmentManagementComp = () => {
     const [showSpinner, toggleSpinner] = useState(false)
     const [checkstate, updateCheck] = useState([])
     const [radioState, changeRadio] = useState({})
+    const [radioStateA, changeRadioA] = useState({})
+    const [alternatives, setAlt] = useState([])
+
 
     useEffect(() => {
         toggleSpinner(true)
@@ -215,10 +218,8 @@ const AppointmentManagementComp = () => {
           })
           .then(function(data) {
               setRequests(data["data"])
-
               toggleSpinner(false)
           })
-
     }, [])
 
     useEffect(() => {
@@ -235,10 +236,12 @@ const AppointmentManagementComp = () => {
                     body: radioState,
                 },
               )
-                .then(function(response) {
+                .then((response) => {
                     return response.json()
                 })
-                .then(function(data) {
+                .then((data) => {
+                    setAlt(data["data"]);
+                    console.log(alternatives)
                     console.log(data)
                     toggleSpinner(false)
                 }).catch((err) => {
@@ -246,18 +249,24 @@ const AppointmentManagementComp = () => {
               })
               console.log(radioState)
           }
-      }
-      , [radioState])
+      }, [radioState])
 
     const changeHandler = () => {
         console.log(radioState);
-    }
+    };
 
     const handleOptionChange = (changeEvent) => {
+        console.log("trig")
         changeRadio(changeEvent.target.value);
     };
 
+    const handleOptionChangeA = (changeEvent) => {
+        console.log("trigA")
+        changeRadioA(changeEvent.target.value);
+    };
 
+
+    console.log(alternatives)
     return (
       <div>
           {showSpinner ? <SpinnerComp/> :
@@ -303,27 +312,31 @@ const AppointmentManagementComp = () => {
                             <Table striped bordered hover size="sm">
                                 <thead>
                                 <tr>
+                                    <th>Username</th>
                                     <th>Date</th>
                                     <th>Time</th>
-                                    <th>Patient Name</th>
+                                    <th>Doctor</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>4/3/2020</td>
-                                    <td>12:00</td>
-                                    <td>Example user 1</td>
-                                </tr>
-                                <tr>
-                                    <td>4/3/2020</td>
-                                    <td>12:00</td>
-                                    <td>Example user 2</td>
-                                </tr>
-                                <tr>
-                                    <td>4/3/2020</td>
-                                    <td>12:00</td>
-                                    <td>Example user 3</td>
-                                </tr>
+                                {alternatives.length > 0 ? (
+                                  alternatives.map((value, index) => {
+                                      return (
+                                        <AlternativesTable
+                                          key={index}
+                                          checkIndex={index}
+                                          username={value[1].username}
+                                          date={value[1].date}
+                                          time={value[1].time}
+                                          doctor={value[1].doctor}
+                                          handleChange={handleOptionChangeA}
+                                          radState={radioStateA}
+                                        />
+                                      )
+                                  })
+                                ) : (
+                                  <AlternativesTable username={""}/>
+                                )}
                                 </tbody>
                             </Table>
                         </Col></Row></Container>
@@ -345,6 +358,40 @@ const CancelTableRow = props => {
         )
     }
 
+    return (
+      <tr>
+          <td>{props.username}</td>
+          <td>{props.date}</td>
+          <td>{props.time}</td>
+          <td>{props.doctor}</td>
+          <td><div className="form-check">
+              <label>
+                  <input
+                    type="radio"
+                    name="react-tips"
+                    value={JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor, "username": props.username})}
+                    checked={props.radState === JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor, "username": props.username})}
+                    className="form-check-input"
+                    onChange={props.handleChange}
+                  />
+              </label>
+          </div></td>
+      </tr>
+    )
+}
+
+
+const AlternativesTable = props => {
+    if (props.username === "") {
+        return (
+          <tr>
+              <td>No Requests</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+          </tr>
+        )
+    }
     return (
       <tr>
           <td>{props.username}</td>
