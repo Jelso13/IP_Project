@@ -223,47 +223,53 @@ const AppointmentManagementComp = () => {
     }, [])
 
     useEffect(() => {
-          if (radioState.length > 0) {
-              toggleSpinner(true)
-              fetch(
-                "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAvailableForCancellation",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: radioState,
-                },
-              )
-                .then((response) => {
-                    return response.json()
-                })
-                .then((data) => {
-                    setAlt(data["data"]);
-                    console.log(alternatives)
-                    console.log(data)
-                    toggleSpinner(false)
-                }).catch((err) => {
-                  console.log(err);
+        if (radioState.length > 0) {
+            toggleSpinner(true)
+            fetch(
+              "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAvailableForCancellation",
+              {
+                  method: "POST",
+                  mode: "cors",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: radioState,
+              },
+            )
+              .then((response) => {
+                  return response.json()
               })
-              console.log(radioState)
-          }
-      }, [radioState])
+              .then((data) => {
+                  setAlt(data["data"])
+                  console.log(alternatives)
+                  console.log(data)
+                  toggleSpinner(false)
+              }).catch((err) => {
+                console.log(err)
+            })
+            console.log(radioState)
+        }
+    }, [radioState])
 
     const changeHandler = () => {
-        console.log(radioState);
-    };
+        console.log(radioState)
+        console.log(radioStateA)
+    }
 
     const handleOptionChange = (changeEvent) => {
         console.log("trig")
-        changeRadio(changeEvent.target.value);
-    };
+        console.log(changeEvent.target)
+        changeRadio({});
+        changeRadio(changeEvent.target.value)
+    }
 
     const handleOptionChangeA = (changeEvent) => {
         console.log("trigA")
-        changeRadioA(changeEvent.target.value);
-    };
+        console.log(changeEvent.target)
+        changeRadioA({})
+        changeRadioA(changeEvent.target.value)
+
+    }
 
 
     console.log(alternatives)
@@ -325,12 +331,12 @@ const AppointmentManagementComp = () => {
                                         <AlternativesTable
                                           key={index}
                                           checkIndex={index}
-                                          username={value[1].username}
-                                          date={value[1].date}
-                                          time={value[1].time}
-                                          doctor={value[1].doctor}
+                                          username={value.username}
+                                          date={value.date}
+                                          time={value.time}
+                                          doctor={value.doctor}
                                           handleChange={handleOptionChangeA}
-                                          radState={radioStateA}
+                                          radStateA={radioStateA}
                                         />
                                       )
                                   })
@@ -364,24 +370,44 @@ const CancelTableRow = props => {
           <td>{props.date}</td>
           <td>{props.time}</td>
           <td>{props.doctor}</td>
-          <td><div className="form-check">
-              <label>
-                  <input
-                    type="radio"
-                    name="react-tips"
-                    value={JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor, "username": props.username})}
-                    checked={props.radState === JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor, "username": props.username})}
-                    className="form-check-input"
-                    onChange={props.handleChange}
-                  />
-              </label>
-          </div></td>
+          <td>
+              <div className="form-check">
+                  <label>
+                      <input
+                        type="radio"
+                        name="react-tips"
+                        value={JSON.stringify({
+                            "date": props.date,
+                            "time": props.time,
+                            "doctor": props.doctor,
+                            "username": props.username,
+                        })}
+                        checked={props.radState === JSON.stringify({
+                            "date": props.date,
+                            "time": props.time,
+                            "doctor": props.doctor,
+                            "username": props.username,
+                        })}
+                        className="form-check-input"
+                        onChange={props.handleChange}
+                      />
+                  </label>
+              </div>
+          </td>
       </tr>
     )
 }
 
 
 const AlternativesTable = props => {
+    console.log(props.radStateA + " ## # # ## " + JSON.stringify({
+        "date": props.date,
+        "time": props.time,
+        "doctor": props.doctor,
+        "username": props.username,
+    }),
+    )
+
     if (props.username === "") {
         return (
           <tr>
@@ -398,18 +424,30 @@ const AlternativesTable = props => {
           <td>{props.date}</td>
           <td>{props.time}</td>
           <td>{props.doctor}</td>
-          <td><div className="form-check">
-              <label>
-                  <input
-                    type="radio"
-                    name="react-tips"
-                    value={JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor})}
-                    checked={props.radState === JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor})}
-                    className="form-check-input"
-                    onChange={props.handleChange}
-                  />
-              </label>
-          </div></td>
+          <td>
+              <div className="form-check">
+                  <label>
+                      <input
+                        type="radio"
+                        name="a"
+                        value={JSON.stringify({
+                            "date": props.date,
+                            "time": props.time,
+                            "doctor": props.doctor,
+                            "username": props.username,
+                        })}
+                        checked={props.radStateA === JSON.stringify({
+                            "date": props.date,
+                            "time": props.time,
+                            "doctor": props.doctor,
+                            "username": props.username,
+                        })}
+                        className="a"
+                        onChange={props.handleChange}
+                      />
+                  </label>
+              </div>
+          </td>
       </tr>
     )
 }

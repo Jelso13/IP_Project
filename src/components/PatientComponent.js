@@ -272,15 +272,12 @@ const AvailabilityComp = () => {
       })
       .then(data => {
         console.log(data)
+          console.log("myEvents.length = " + myEvents.length);
         for (let i = 0; i < myEvents.length; i++) {
-          console.log(
-            "type is " + toString(typeof myEvents[i].start.getMinutes())
-          )
-          console.log(toString(myEvents[i].start.getMinutes()).padEnd(2, "0"))
           let formatted_date =
-            myEvents[i].start.getDate() +
+            ("00" + myEvents[i].start.getDate()).slice(-2) +
             "/" +
-            (myEvents[i].start.getMonth() + 1) +
+            ("00" + (myEvents[i].start.getMonth()+1)).slice(-2)+
             "/" +
             myEvents[i].start.getFullYear()
           let formatted_start =
