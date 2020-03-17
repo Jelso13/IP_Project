@@ -20,7 +20,8 @@ receptionUsernames.append("reception")
 patientNames.append("patient")
 receptionNames.append("reception")
 
-password = "pass"
+patientUsernames.append("alwaysAvailable")
+patientNames.append("alwaysAvailable")
 
 req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/WipeUsers", json={})
 print(req.status_code)
@@ -53,7 +54,7 @@ for i in doctors:
 clinics = ["Anaesthetics", "Cardiology", "Diagnostic imaging", "Ear nose and throat (ENT)", "Haematology", "Neurology", "Oncology", "Physiotherapy"]
 
 for i in range(len(patientUsernames)):
-    for j in range(random.randrange(3,10)):
+    for j in range(random.randrange(3,15)):
         sMins = str(random.choice(["00", "30"]))
         sHours = random.randrange(8, 20)
         eMins = ""
@@ -89,6 +90,16 @@ for i in range(len(patientUsernames)):
         # add doctor appointment too
         req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment", json=my_json)
 
-
+        if patientUsernames[i] == "alwaysAvailable":
+            for x in range(1,29):
+                for y in range(int(currentDate[1]),13):
+                    adate = str(x).rjust(2, "0") + "/" + str(y).rjust(2, "0") + "/2020"
+                    aStartTime = "8:00"
+                    aEndTime = "17:00"
+                    available_json = {"username":patientUsernames[i],
+                                      "timeStart":aStartTime,
+                                      "timeEnd":aEndTime,
+                                      "date":adate}
+                    req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateAvailability", json=available_json)
 
 print("done")

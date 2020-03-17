@@ -195,7 +195,7 @@ const AppointmentManagementComp = () => {
     const [requests, setRequests] = useState([])
     const [showSpinner, toggleSpinner] = useState(false)
     const [checkstate, updateCheck] = useState([])
-    const [radioState, changeRadio] = useState("")
+    const [radioState, changeRadio] = useState({})
 
     useEffect(() => {
         toggleSpinner(true)
@@ -215,19 +215,39 @@ const AppointmentManagementComp = () => {
           })
           .then(function(data) {
               setRequests(data["data"])
-              console.log(data)
 
-              console.log("this is the requests" + requests)
-
-              let checkboxes = []
-              for (let i = 0; i < data.length; i++) {
-                  checkboxes.push(false)
-              }
               toggleSpinner(false)
-              updateCheck(checkboxes)
           })
 
     }, [])
+
+    useEffect(() => {
+          if (radioState.length > 0) {
+              toggleSpinner(true)
+              fetch(
+                "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAvailableForCancellation",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: radioState,
+                },
+              )
+                .then(function(response) {
+                    return response.json()
+                })
+                .then(function(data) {
+                    console.log(data)
+                    toggleSpinner(false)
+                }).catch((err) => {
+                  console.log(err);
+              })
+              console.log(radioState)
+          }
+      }
+      , [radioState])
 
     const changeHandler = () => {
         console.log(radioState);
@@ -235,7 +255,6 @@ const AppointmentManagementComp = () => {
 
     const handleOptionChange = (changeEvent) => {
         changeRadio(changeEvent.target.value);
-        console.log(radioState);
     };
 
 
@@ -337,8 +356,8 @@ const CancelTableRow = props => {
                   <input
                     type="radio"
                     name="react-tips"
-                    value={"option"+props.checkIndex.toString()}
-                    checked={props.radState === "option"+props.checkIndex.toString()}
+                    value={JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor})}
+                    checked={props.radState === JSON.stringify({"date":props.date, "time":props.time, "doctor": props.doctor})}
                     className="form-check-input"
                     onChange={props.handleChange}
                   />
