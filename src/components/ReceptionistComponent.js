@@ -252,17 +252,146 @@ const AppointmentManagementComp = () => {
         }
     }, [radioState])
 
+    const addMinutes = (time, minsToAdd) => {
+        let f = (x) => { return (x<10? '0':'') + x};
+        var piece = time.split(':');
+        var mins = piece[0]*60 + +piece[1] + +minsToAdd;
+        return f(mins%(24*60)/60 | 0) + ':' + f(mins%60);
+    }
+
     const changeHandler = () => {
         if (!(radioState.length == undefined || radioStateA.length == undefined)){
-            setConfirmed(true);
             // update the alternate appointment to the cancellation one
             // also in doctor collection
             // delete the cancellation appointment
             // create notice request for both patients
             // read this notice request from front page.
+            let x = JSON.parse(radioStateA);
+            let y = JSON.parse(radioState);
+            changeRadioA({});
+            changeRadio({});
+            changeRadioA(x);
+            changeRadio(y);
+            console.log("x stringify = " + JSON.stringify(x))
+
+            console.log("this is the radioState time ", y.time)
+            var newApp = {
+                "username":x.username,
+                "date":y.date,
+                "time":y.time,
+                "doctor":y.doctor
+            }
+
+            var doc_json = {
+                "username": y.doctor,
+                "stime": y.time,
+                "etime": addMinutes(y.time,"30"),
+                "date": y.date,
+                "patient": x.username
+            }
+            // write function that stores notification requests for both the cancelling patient
+            // and the alternative patient such that they are notified on their home page that
+            // their appointment has been changed
+            fetch(
+              "https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment",
+              {
+                  method: "POST",
+                  mode: "cors",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(newApp),
+              },
+            )
+              .then((response) => {
+                  return response.json()
+              })
+              .then((data) => {
+                  console.log(data.m)
+              }).catch((err) => {
+                console.log(err)
+            }).then(
+            fetch(
+              "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment",
+              {
+                  method: "POST",
+                  mode: "cors",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(doc_json),
+              },
+            )
+              .then((response) => {
+                  return response.json()
+              })
+              .then((data) => {
+                  console.log(data.m)
+              }).catch((err) => {
+                console.log(err)
+            })).then(
+              fetch(
+                "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(y),
+                },
+              )
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data.m)
+                }).catch((err) => {
+                  console.log(err)
+              })).then(
+              fetch(
+                "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(x),
+                },
+              )
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data.m)
+                }).catch((err) => {
+                  console.log(err)
+              })).then(
+              fetch(
+                "https://europe-west2-sustained-node-257616.cloudfunctions.net/DeleteCancellation",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(y),
+                },
+              )
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data.m)
+                }).catch((err) => {
+                  console.log(err)
+              }))
+
             console.log("yes")
             console.log(radioState)
             console.log(radioStateA)
+            setConfirmed(true);
         }
     }
 
@@ -280,9 +409,6 @@ const AppointmentManagementComp = () => {
         changeRadioA(changeEvent.target.value)
 
     }
-
-
-    console.log(alternatives)
     return (
       <div>
           {showSpinner ? <SpinnerComp/> :
@@ -410,18 +536,11 @@ const CancelTableRow = props => {
 
 
 const AlternativesTable = props => {
-    console.log(props.radStateA + " ## # # ## " + JSON.stringify({
-        "date": props.date,
-        "time": props.time,
-        "doctor": props.doctor,
-        "username": props.username,
-    }),
-    )
 
     if (props.username === "") {
         return (
           <tr>
-              <td>No Requests</td>
+              <td>No Alternatives</td>
               <td>.</td>
               <td>.</td>
               <td>.</td>
