@@ -87,10 +87,8 @@ for i in range(len(patientUsernames)):
             "patient": patientUsernames[i]
         }
         dreq = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment", json=doc_json)
-        print(dreq)
         # add doctor appointment too
         req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment", json=my_json)
-        print(req)
 
         if patientUsernames[i] == "alwaysAvailable":
             for x in range(1,29):

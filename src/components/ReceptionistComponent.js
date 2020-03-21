@@ -197,7 +197,7 @@ const AppointmentManagementComp = () => {
     const [radioState, changeRadio] = useState({})
     const [radioStateA, changeRadioA] = useState({})
     const [alternatives, setAlt] = useState([])
-    const [confirmed, setConfirmed] = useState(false);
+    const [confirmed, setConfirmed] = useState(false)
 
 
     useEffect(() => {
@@ -220,14 +220,13 @@ const AppointmentManagementComp = () => {
               setRequests(data["data"])
               toggleSpinner(false)
           })
-        setConfirmed(false);
-    }, [confirmed])
+        setConfirmed(false)
+    }, [confirmed, radioState])
 
     useEffect(() => {
         if (radioState.length > 0) {
             toggleSpinner(true)
-            fetch(
-              "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAvailableForCancellation",
+            fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAvailableForCancellation",
               {
                   method: "POST",
                   mode: "cors",
@@ -236,11 +235,9 @@ const AppointmentManagementComp = () => {
                   },
                   body: radioState,
               },
-            )
-              .then((response) => {
+            ).then((response) => {
                   return response.json()
-              })
-              .then((data) => {
+              }).then((data) => {
                   setAlt(data["data"])
                   console.log(alternatives)
                   console.log(data)
@@ -250,50 +247,69 @@ const AppointmentManagementComp = () => {
             })
             console.log(radioState)
         }
-    }, [radioState])
+    }, [confirmed, radioState])
 
     const addMinutes = (time, minsToAdd) => {
-        let f = (x) => { return (x<10? '0':'') + x};
-        var piece = time.split(':');
-        var mins = piece[0]*60 + +piece[1] + +minsToAdd;
-        return f(mins%(24*60)/60 | 0) + ':' + f(mins%60);
+        let f = (x) => {
+            return (x < 10 ? "0" : "") + x
+        }
+        var piece = time.split(":")
+        var mins = piece[0] * 60 + +piece[1] + +minsToAdd
+        return f(mins % (24 * 60) / 60 | 0) + ":" + f(mins % 60)
     }
 
     const changeHandler = () => {
-        if (!(radioState.length == undefined || radioStateA.length == undefined)){
+        if (!(radioState.length == undefined || radioStateA.length == undefined)) {
             // update the alternate appointment to the cancellation one
             // also in doctor collection
             // delete the cancellation appointment
             // create notice request for both patients
             // read this notice request from front page.
-            let x = JSON.parse(radioStateA);
-            let y = JSON.parse(radioState);
-            changeRadioA({});
-            changeRadio({});
-            changeRadioA(x);
-            changeRadio(y);
+            console.log(radioState)
+            console.log(radioStateA)
+            let x = JSON.parse(radioStateA)
+            let y = JSON.parse(radioState)
+            console.log(x);
+            console.log(y);
+            changeRadioA({})
+            changeRadio({})
+            changeRadioA(x)
+            changeRadio(y)
             console.log("x stringify = " + JSON.stringify(x))
 
             console.log("this is the radioState time ", y.time)
             var newApp = {
-                "username":x.username,
-                "date":y.date,
-                "time":y.time,
-                "doctor":y.doctor
+                "username": x.username,
+                "date": y.date,
+                "time": y.time,
+                "doctor": y.doctor,
             }
 
             var doc_json = {
                 "username": y.doctor,
                 "stime": y.time,
-                "etime": addMinutes(y.time,"30"),
+                "etime": addMinutes(y.time, "30"),
                 "date": y.date,
-                "patient": x.username
+                "patient": x.username,
+            }
+
+            var notA = {
+                "username": y.username,
+                "message": "The appointment on " + y.date +
+                  " at " + y.time + " with " + y.doctor +
+                  " has been cancelled."
+            }
+
+            var notB = {
+                "username": x.username,
+                "message": "The appointment on " + x.date +
+                  " at " + x.time + " with " + x.doctor +
+                  " has been moved to " + x.date + " at " + x.time
             }
             // write function that stores notification requests for both the cancelling patient
             // and the alternative patient such that they are notified on their home page that
             // their appointment has been changed
-            fetch(
-              "https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment",
+            fetch("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment",
               {
                   method: "POST",
                   mode: "cors",
@@ -302,34 +318,32 @@ const AppointmentManagementComp = () => {
                   },
                   body: JSON.stringify(newApp),
               },
-            )
-              .then((response) => {
+            ).then((response) => {
                   return response.json()
-              })
-              .then((data) => {
+              }).then((data) => {
                   console.log(data.m)
               }).catch((err) => {
                 console.log(err)
-            }).then(
-            fetch(
-              "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment",
-              {
-                  method: "POST",
-                  mode: "cors",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(doc_json),
-              },
-            )
-              .then((response) => {
-                  return response.json()
-              })
-              .then((data) => {
-                  console.log(data.m)
-              }).catch((err) => {
-                console.log(err)
-            })).then(
+            }).then(() => {
+              fetch(
+                "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(doc_json),
+                },
+              )
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data.m)
+                }).catch((err) => {
+                  console.log(err)
+              })}).then(() => {
               fetch(
                 "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
                 {
@@ -348,7 +362,7 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              })).then(
+              })}).then(() => {
               fetch(
                 "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
                 {
@@ -367,7 +381,7 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              })).then(
+              })}).then(() => {
               fetch(
                 "https://europe-west2-sustained-node-257616.cloudfunctions.net/DeleteCancellation",
                 {
@@ -386,19 +400,58 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              }))
+              })}).then(() => {
+                  console.log(notA)
+              fetch(
+                "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(notA),
+                },
+              )
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data.m)
+                }).catch((err) => {
+                  console.log(err)
+              })}).then(() => {
+              fetch(
+                "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
+                {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(notB),
+                },
+              )
+                .then((response) => {
+                    return response.json()
+                })
+                .then((data) => {
+                    console.log(data.m)
+                }).catch((err) => {
+                  console.log(err)
+              })});
 
             console.log("yes")
             console.log(radioState)
             console.log(radioStateA)
-            setConfirmed(true);
+            setConfirmed(true)
         }
     }
 
     const handleOptionChange = (changeEvent) => {
         console.log("trig")
         console.log(changeEvent.target)
-        changeRadio({});
+        changeRadio({})
         changeRadio(changeEvent.target.value)
     }
 
@@ -482,7 +535,8 @@ const AppointmentManagementComp = () => {
                                 </tbody>
                             </Table>
                         </Col></Row></Container>
-                <Button variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with alternative</Button>
+                <Button variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with
+                    alternative</Button>
             </div>}
       </div>
     )
