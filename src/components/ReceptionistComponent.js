@@ -226,8 +226,7 @@ const AppointmentManagementComp = () => {
     useEffect(() => {
         if (radioState.length > 0) {
             toggleSpinner(true)
-            fetch(
-              "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAvailableForCancellation",
+            fetch("https://europe-west2-sustained-node-257616.cloudfunctions.net/GetAvailableForCancellation",
               {
                   method: "POST",
                   mode: "cors",
@@ -236,11 +235,9 @@ const AppointmentManagementComp = () => {
                   },
                   body: radioState,
               },
-            )
-              .then((response) => {
+            ).then((response) => {
                   return response.json()
-              })
-              .then((data) => {
+              }).then((data) => {
                   setAlt(data["data"])
                   console.log(alternatives)
                   console.log(data)
@@ -268,8 +265,12 @@ const AppointmentManagementComp = () => {
             // delete the cancellation appointment
             // create notice request for both patients
             // read this notice request from front page.
+            console.log(radioState)
+            console.log(radioStateA)
             let x = JSON.parse(radioStateA)
             let y = JSON.parse(radioState)
+            console.log(x);
+            console.log(y);
             changeRadioA({})
             changeRadio({})
             changeRadioA(x)
@@ -293,23 +294,22 @@ const AppointmentManagementComp = () => {
             }
 
             var notA = {
-                "username": radioState.username,
-                "message": "The appointment on " + radioState.date +
-                  " at " + radioState.time + " with " + radioState.doctor +
+                "username": y.username,
+                "message": "The appointment on " + y.date +
+                  " at " + y.time + " with " + y.doctor +
                   " has been cancelled."
             }
 
             var notB = {
-                "username": radioStateA.username,
-                "message": "The appointment on " + radioStateA.date +
-                  " at " + radioStateA.time + " with " + radioStateA.doctor +
-                  " has been moved to " + radioState.date + " at " + radioState.time
+                "username": x.username,
+                "message": "The appointment on " + x.date +
+                  " at " + x.time + " with " + x.doctor +
+                  " has been moved to " + x.date + " at " + x.time
             }
             // write function that stores notification requests for both the cancelling patient
             // and the alternative patient such that they are notified on their home page that
             // their appointment has been changed
-            fetch(
-              "https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment",
+            fetch("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment",
               {
                   method: "POST",
                   mode: "cors",
@@ -318,15 +318,13 @@ const AppointmentManagementComp = () => {
                   },
                   body: JSON.stringify(newApp),
               },
-            )
-              .then((response) => {
+            ).then((response) => {
                   return response.json()
-              })
-              .then((data) => {
+              }).then((data) => {
                   console.log(data.m)
               }).catch((err) => {
                 console.log(err)
-            }).then(
+            }).then(() => {
               fetch(
                 "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment",
                 {
@@ -345,7 +343,7 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              })).then(
+              })}).then(() => {
               fetch(
                 "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
                 {
@@ -364,7 +362,7 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              })).then(
+              })}).then(() => {
               fetch(
                 "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
                 {
@@ -383,7 +381,7 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              })).then(
+              })}).then(() => {
               fetch(
                 "https://europe-west2-sustained-node-257616.cloudfunctions.net/DeleteCancellation",
                 {
@@ -402,7 +400,8 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              })).then(
+              })}).then(() => {
+                  console.log(notA)
               fetch(
                 "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
                 {
@@ -421,7 +420,7 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              })).then(
+              })}).then(() => {
               fetch(
                 "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
                 {
@@ -430,7 +429,7 @@ const AppointmentManagementComp = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: notB,
+                    body: JSON.stringify(notB),
                 },
               )
                 .then((response) => {
@@ -440,7 +439,7 @@ const AppointmentManagementComp = () => {
                     console.log(data.m)
                 }).catch((err) => {
                   console.log(err)
-              }))
+              })});
 
             console.log("yes")
             console.log(radioState)
