@@ -7,6 +7,9 @@ import { navigate } from "gatsby-link"
 const Header = (props) => (
   <header
     style={{
+      overflowX:"scroll",
+      overflowY:"scroll",
+      width: "100%"
     }}
   >
     <Navbar bg="dark" variant="dark">

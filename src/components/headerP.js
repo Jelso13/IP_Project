@@ -6,7 +6,11 @@ import { navigate } from "gatsby-link"
 
 const HeaderPat = (props) => {
  return ( <header
-    style={{}}
+    style={{
+      overflowX:"scroll",
+      overflowY:"scroll",
+      width: "100%"
+    }}
   >
     <Navbar bg="dark" variant="dark">
       <Nav className="mr-auto" expand={"lg"}>

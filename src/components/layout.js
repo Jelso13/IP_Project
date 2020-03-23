@@ -48,7 +48,7 @@ const Layout = ({ children, headerChoice, changeTab}) => {
                     backgroundRepeat: "no-repeat",
                     backgroundSize: "contain",
                     backgroundPosition:"center bottom",
-                    overflow:"hidden",
+                    overflow:"scroll",
                 }}
               >
                   <main>{children}</main>
