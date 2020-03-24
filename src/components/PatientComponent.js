@@ -20,6 +20,8 @@ import * as dates from "./dates"
 import Popup from "reactjs-popup"
 import moment from "moment"
 import "react-big-calendar/lib/css/react-big-calendar.css"
+import icon from '../images/Icon.png'
+import Layout from "./layout"
 
 const PatientComponent = props => {
     // height: calc(100% - x pixels)
@@ -77,6 +79,14 @@ const HomeComp = () => {
 
     return (
       <div>
+          <div style = {{
+              backgroundImage: "url("+icon+")",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "contain",
+              backgroundPosition:"center bottom",
+              minHeight: "100px"
+          }}>
+          </div>
           <h1>Home</h1>
           <p style={{ margin: 0 }}>{"Welcome " + username}</p>
           <p>{"You have now logged in as " + userType}</p>

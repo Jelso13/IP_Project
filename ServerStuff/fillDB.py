@@ -91,15 +91,6 @@ for i in range(len(patientUsernames)):
         req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment", json=my_json)
 
         if patientUsernames[i] == "alwaysAvailable":
-            for x in range(1,29):
-                for y in range(int(currentDate[1]),13):
-                    adate = str(x).rjust(2, "0") + "/" + str(y).rjust(2, "0") + "/2020"
-                    aStartTime = "8:00"
-                    aEndTime = "17:00"
-                    available_json = {"username":patientUsernames[i],
-                                      "timeStart":aStartTime,
-                                      "timeEnd":aEndTime,
-                                      "date":adate}
-                    req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateAvailability", json=available_json)
+            req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateAllAvailability", json={"username": "alwaysAvailable"})
 
 print("done")

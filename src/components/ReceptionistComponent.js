@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Cookies from "universal-cookie"
 import { Button, Col, Container, Form, Row, Spinner, Table } from "react-bootstrap"
+import icon from "../images/Icon.png"
 
 const ReceptionistComponent = (props) => {
     if (props.currentTab === "home") {
@@ -20,6 +21,14 @@ const HomeComp = () => {
     const userType = cookies.get("uType")
 
     return (<div>
+          <div style = {{
+              backgroundImage: "url("+icon+")",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "contain",
+              backgroundPosition:"center bottom",
+              minHeight: "100px"
+          }}>
+          </div>
           <h1>Home</h1>
           <p style={{ margin: 0 }}>{"Welcome " + username}</p>
           <p>{"You have now logged in as " + userType}</p>

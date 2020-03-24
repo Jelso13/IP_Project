@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Navbar, Nav} from 'react-bootstrap';
 import Cookies from 'universal-cookie';
 import { navigate } from "gatsby-link"
+import iconMan from "../images/IconMan.png"
 
 const HeaderPat = (props) => {
  return ( <header
@@ -19,6 +20,15 @@ const HeaderPat = (props) => {
      }}>
     <Navbar bg="dark" variant="dark" style={{minWidth:"420px"}}>
       <Nav className="mr-auto" expand={"lg"}>
+          <div style = {{
+              backgroundImage: "url("+iconMan+")",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition:"center center",
+              minWidth: "30px",
+              backgroundSize: "150%",
+              position:"relative",
+          }}>
+          </div>
         <Nav.Link onClick={() => props.changeTab("home")}>Home</Nav.Link>
         <Nav.Link onClick={() => props.changeTab("appointments")}>Appointments</Nav.Link>
         <Nav.Link onClick={() => props.changeTab("availability")}>Availability</Nav.Link>
