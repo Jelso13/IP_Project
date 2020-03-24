@@ -8,8 +8,8 @@ import iconMan from "../images/IconMan.png"
 const Header = (props) => (
   <header
     style={{
-      overflowX:"scroll",
-      overflowY:"scroll",
+      overflowX:"auto",
+      overflowY:"auto",
       width: "100%"
     }}
   >
