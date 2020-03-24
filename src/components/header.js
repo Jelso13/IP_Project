@@ -12,7 +12,7 @@ const Header = (props) => (
       width: "100%"
     }}
   >
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark" style={{minWidth:"420px"}}>
       <Nav className="mr-auto" expand={"lg"}>
         <Nav.Link onClick={() => props.changeTab("home")}>Home</Nav.Link>
         <Nav.Link onClick={() => props.changeTab("appointmentSlots")}>Appointment Management</Nav.Link>

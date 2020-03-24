@@ -30,8 +30,10 @@ const HomePage = ({location}) => {
   return (
     <Layout headerChoice={userType} changeTab={changeTab}>
     <CookieChecker />
+    <div>
     <SEO title="Home"/>
       {userType==="patient" ? <PatientComponent currentTab={currentTab} /> : <ReceptionistComponent currentTab={currentTab} />}
+    </div>
   </Layout>);
 }
 

@@ -26,12 +26,29 @@ const Layout = ({ children, headerChoice, changeTab}) => {
           style={{
               backgroundImage: headerChoice === "patient" ? "linear-gradient(#FFFFFF,#818cf7)" : "linear-gradient(#ffffff,#f1cfff)",
               height:"100vh",
-              minHeight:"100%",
               display:"flex",
               flexDirection:"column",
               overflow:"hidden",
           }}>
               {headerChoice === "patient" ? <HeaderPat changeTab={changeTab}/> : <Header changeTab={changeTab}/>}
+              <div
+              style={{
+                  margin: `0 auto`,
+                  maxWidth: 960,
+                  padding: `0 1.0875rem 1.45rem`,
+                  position:"relative",
+                  top: 0,
+                  left: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  flex:1,
+                  width: "100%",
+                  backgroundImage: "url("+BackgroundR+")",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "contain",
+                  backgroundPosition:"center bottom",
+                  overflow:"hidden",
+              }}>
               <div
                 style={{
                     margin: `0 auto`,
@@ -44,14 +61,12 @@ const Layout = ({ children, headerChoice, changeTab}) => {
                     flexDirection: "column",
                     flex:1,
                     width: "100%",
-                    backgroundImage: "url("+BackgroundR+")",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "contain",
-                    backgroundPosition:"center bottom",
-                    overflow:"scroll",
+                    overflow:"auto",
+                    maxHeight: "90%"
                 }}
               >
                   <main>{children}</main>
+              </div>
               </div>
           </div>
       </>

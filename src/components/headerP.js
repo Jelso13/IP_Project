@@ -7,12 +7,17 @@ import { navigate } from "gatsby-link"
 const HeaderPat = (props) => {
  return ( <header
     style={{
-      overflowX:"scroll",
-      overflowY:"scroll",
-      width: "100%"
+      overflowX:"hidden",
+      overflowY:"hidden",
+        width:"100hv"
     }}
   >
-    <Navbar bg="dark" variant="dark">
+     <div style={{
+         overflowX:"auto",
+         overflowY:"auto",
+         width:"100hv"
+     }}>
+    <Navbar bg="dark" variant="dark" style={{minWidth:"420px"}}>
       <Nav className="mr-auto" expand={"lg"}>
         <Nav.Link onClick={() => props.changeTab("home")}>Home</Nav.Link>
         <Nav.Link onClick={() => props.changeTab("appointments")}>Appointments</Nav.Link>
@@ -29,6 +34,7 @@ const HeaderPat = (props) => {
         </Nav.Link>
       </Nav>
     </Navbar>
+     </div>
   </header>)
 }
 
