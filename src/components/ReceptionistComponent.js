@@ -150,7 +150,7 @@ const CallReqComp = () => {
                     )}
                     </tbody>
                 </Table>
-                < Button onClick={() =>
+                < Button variant={"dark"} onClick={() =>
                   cancelHandler()
                 }> Remove Request</Button>
             </div>
@@ -472,7 +472,10 @@ const AppointmentManagementComp = () => {
 
     }
     return (
-      <div>
+      <div style={{
+          height: "100%",
+          maxHeight: "100%"
+      }}>
           {showSpinner ? <SpinnerComp/> :
             <div>
                 <h1>Appointment Management</h1>
@@ -480,7 +483,11 @@ const AppointmentManagementComp = () => {
                     <Row>
                         <Col>
                             <h5 style={{ margin: "5px" }}>Cancellations</h5>
-                            <Table striped bordered hover size="sm">
+                            <Table striped bordered hover size="sm" style={{
+                                height: '400px',
+                                overflowY: "auto",
+                                display: 'block',
+                            }}>
                                 <thead>
                                 <tr>
                                     <th>Username</th>
@@ -513,7 +520,13 @@ const AppointmentManagementComp = () => {
                         </Col>
                         <Col>
                             <h5 style={{ margin: "5px" }}>Possible Alternative Patients</h5>
-                            <Table striped bordered hover size="sm">
+                            <Table striped bordered hover size="sm" style={{
+                                height: 'auto',
+                                width: "auto",
+                                maxHeight: "100%",
+                                overflowY: "auto",
+                                display: 'block',
+                            }}>
                                 <thead>
                                 <tr>
                                     <th>Username</th>

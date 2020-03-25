@@ -191,41 +191,47 @@ const AppointmentComp = () => {
     // value and are then added to the table.
     return (
       <div>
-          <h1>Appointment</h1>
+          <h1>Appointments</h1>
           {showSpinner ? (
             <SpinnerComp/>
           ) : (
-            <Table striped bordered hover size="sm">
-                <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Doctor</th>
-                    <th>Clinic</th>
-                    <th>Select</th>
-                </tr>
-                </thead>
-                <tbody>
-                {appointments.length > 0 ? (
-                  appointments.map((value, index) => {
-                      return (
-                        <TableRow
-                          key={index}
-                          checkIndex={index}
-                          date={value.date}
-                          time={value.time}
-                          doctor={value.doctor}
-                          clinic={value.clinic}
-                          checkboxes={checkstate}
-                          updateCheck={updateCheck}
-                        />
-                      )
-                  })
-                ) : (
-                  <TableRow date={""}/>
-                )}
-                </tbody>
-            </Table>
+            <div>
+                <Table  style={{
+                    height: '400px',
+                    overflowY: "auto",
+                    display: 'block',
+                }}>
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Doctor</th>
+                        <th>Clinic</th>
+                        <th>Select</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {appointments.length > 0 ? (
+                      appointments.map((value, index) => {
+                          return (
+                            <TableRow
+                              key={index}
+                              checkIndex={index}
+                              date={value.date}
+                              time={value.time}
+                              doctor={value.doctor}
+                              clinic={value.clinic}
+                              checkboxes={checkstate}
+                              updateCheck={updateCheck}
+                            />
+                          )
+                      })
+                    ) : (
+                      <TableRow date={""}/>
+                    )}
+                    </tbody>
+                </Table>
+            </div>
           )}
           <Popup
             modal
@@ -377,7 +383,7 @@ const AvailabilityComp = () => {
             localizer={localizer}
             defaultView={"day"}
             views={["day", "month", "agenda"]}
-            style={{ height: "500px", width: "95%" }}
+            style={{ height: "400px", width: "95%" }}
             selectable={true}
             onView={val => {
                 changeView(val)
