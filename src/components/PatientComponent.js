@@ -277,6 +277,7 @@ const AvailabilityComp = () => {
 
     const [k, forceRerender] = useState(false)
     const now = new Date()
+    now.setDate(now.getDate() + 3)
     const minDate = new Date()
     minDate.setDate(minDate.getDate() + 3)
     const handleSelect = event => {
@@ -381,6 +382,7 @@ const AvailabilityComp = () => {
             onView={val => {
                 changeView(val)
             }}
+            defaultDate={now}
             min={new Date("2017, 1, 7, 07:00")}
             max={new Date("2017, 1, 7, 19:00")}
             components={{
