@@ -452,7 +452,7 @@ const ReqCallComp = () => {
     const [verification, updateVerification] = useState(false)
     const [phoneNumber, updatePhoneNumber] = useState("")
     const [pword, updatePWord] = useState("")
-    const [error, setError] = useState(false)
+    const [error, setError] = useState("n")
     const [sent, hasSent] = useState(false)
 
     const handleButton = () => {
@@ -508,6 +508,7 @@ const ReqCallComp = () => {
                             if (data.m === "Request Created") {
                                 console.log("request sent")
                                 hasSent(true)
+                                setError("")
                             } else {
                                 console.log("password = " + pword)
                                 console.log("usernamer = " + username)
@@ -516,11 +517,11 @@ const ReqCallComp = () => {
                         })
                   } else {
                       console.log("password is wrong")
-                      setError(true)
+                      setError("w")
                   }
               })
         } else {
-            setError(true)
+            setError("n")
         }
     }
 
@@ -566,7 +567,8 @@ const ReqCallComp = () => {
                                 </Button>
                             </InputGroup.Append>
                         </InputGroup>
-                        {error ? (<p>Password is not correct</p>) :
+                        {error === "n" ? (<p></p>) :
+                          error === "w" ? (<p>Password is not correct</p>) :
                           (<p>Request Submitted</p>)}
                     </div>
                   ) : (
