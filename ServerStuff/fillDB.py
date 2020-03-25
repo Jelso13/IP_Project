@@ -54,6 +54,13 @@ for i in doctors:
 clinics = ["Anaesthetics", "Cardiology", "Diagnostic imaging", "Ear nose and throat (ENT)", "Haematology", "Neurology", "Oncology", "Physiotherapy"]
 
 for i in range(len(patientUsernames)):
+    y = random.randrange(0,2)
+    # username and number
+    if y == 0:
+        num = "0" + str(random.randrange(1000000000, 9999999999))
+        req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateCallRequest",
+                            json={"username": patientUsernames[i], "number": num})
+
     for j in range(random.randrange(3,15)):
         sMins = str(random.choice(["00", "30"]))
         sHours = random.randrange(8, 20)
@@ -89,8 +96,14 @@ for i in range(len(patientUsernames)):
         dreq = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment", json=doc_json)
         # add doctor appointment too
         req = requests.post("https://europe-west1-sustained-node-257616.cloudfunctions.net/CreateAppointment", json=my_json)
+        # randomly choose a number in a range and if it is equal to 1 (giving 1 in x chance) request cancellation for the appointment
+        x = random.randrange(0, 6)
+        if x == 0:
+            my_json["type"] = "cancellation"
+            req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateCancelRequest",
+                                json=my_json)
 
         if patientUsernames[i] == "alwaysAvailable":
             req = requests.post("https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateAllAvailability", json={"username": "alwaysAvailable"})
-
+    print(patientUsernames[i] + " completed")
 print("done")
