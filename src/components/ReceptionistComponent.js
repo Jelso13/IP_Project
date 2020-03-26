@@ -480,8 +480,8 @@ const AppointmentManagementComp = () => {
           {showSpinner ? <SpinnerComp/> :
             <div style={{
                 height: "100%",
-                maxHeight: "50%",
-                overflowY: "auto"
+                maxHeight: "70%",
+                overflowY: "hidden"
             }}>
                 <h1>Appointment Management</h1>
                 <Container fluid style={{
@@ -493,7 +493,7 @@ const AppointmentManagementComp = () => {
                         <Col>
                             <h5 style={{ margin: "5px" }}>Cancellations</h5>
                             <Table striped bordered hover size="sm"  style={{
-                                height: '100%',
+                                height: '50%',
                             }}>
                                 <thead>
                                 <tr>
@@ -563,7 +563,7 @@ const AppointmentManagementComp = () => {
                             </Table>
                         </Col></Row></Container>
             </div>}
-          <Button style={{margin: "0"}} variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with
+          <Button style={{margin: "5px"}} variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with
               alternative</Button>
       </div>
     )

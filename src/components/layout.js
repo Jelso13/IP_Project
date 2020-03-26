@@ -55,10 +55,11 @@ const Layout = ({ children, headerChoice, changeTab }) => {
                     flex: 1,
                     width: "100%",
                     overflow: "hidden",
+                    height: "100%",
                     maxHeight: "70%",
                 }}
               >
-                  <main>{children}</main>
+                  {children}
               </div>
               <div style={{
                   position: "fixed",
