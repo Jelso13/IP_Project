@@ -41,8 +41,28 @@ const HomeComp = () => {
     const username = cookies.get("username")
     const userType = cookies.get("uType")
     const [showSpinner, toggleSpinner] = useState(false)
-
+    const [nextA, setA] = useState(false)
     const [notifications, setNot] = useState([])
+
+    useEffect(() => {
+        fetch(
+          "https://europe-west2-sustained-node-257616.cloudfunctions.net/GetNextAppointment",
+          {
+              method: "POST",
+              mode: "cors",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ username: username }),
+          },
+        )
+          .then(function(response) {
+              return response.json()
+          })
+          .then(function(data) {
+              setA(data["appointment"])
+          })
+    }, [])
 
     useEffect(() => {
         toggleSpinner(true)
@@ -96,8 +116,7 @@ const HomeComp = () => {
               overflowY: "auto",
           }}>
               <p style={{ margin: 0 }}>{"Welcome " + username}</p>
-              <p style={{ margin: 0 }}>{"You have now logged in as " + userType}</p>
-              <p style={{ margin: 0 }}>{"this is a placeholder for most recent appointment"}</p>
+              {nextA === false ? <></> : <p style={{ marginTop: 0, fontFamily: "Lucida Console, Courier, monospace"  }}>{"> Your next appointment is on " + nextA.date + " at " + nextA.time + " with " + nextA.doctor +"."}</p>}
               {showSpinner ? (
                 <SpinnerComp/>
               ) : (
