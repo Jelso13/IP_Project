@@ -126,7 +126,7 @@ const CallReqComp = () => {
             <div>
                 <Table striped bordered hover size="sm">
                     <thead>
-                    <tr>
+                    <tr style={{backgroundColor: "#4f96e8"}}>
                         <th>Name</th>
                         <th>Phone Number</th>
                     </tr>
@@ -165,7 +165,7 @@ const TableRow = props => {
     if (props.username === "") {
         console.log("hit")
         return (
-          <tr>
+          <tr style={{backgroundColor: "white"}}>
               <td>No Requests</td>
               <td>.</td>
           </tr>
@@ -179,7 +179,7 @@ const TableRow = props => {
     }
 
     return (
-      <tr>
+      <tr style={{backgroundColor: "white"}}>
           <td>{props.username}</td>
           <td>{props.number}</td>
           <td>
@@ -496,7 +496,7 @@ const AppointmentManagementComp = () => {
                                 height: '50%',
                             }}>
                                 <thead>
-                                <tr>
+                                <tr style={{backgroundColor: "#4f96e8"}}>
                                     <th>Username</th>
                                     <th>Date</th>
                                     <th>Time</th>
@@ -533,7 +533,7 @@ const AppointmentManagementComp = () => {
                                 maxHeight: "100%",
                             }}>
                                 <thead>
-                                <tr>
+                                <tr style={{backgroundColor: "#4f96e8"}}>
                                     <th>Username</th>
                                     <th>Date</th>
                                     <th>Time</th>
@@ -572,7 +572,7 @@ const AppointmentManagementComp = () => {
 const CancelTableRow = props => {
     if (props.username === "") {
         return (
-          <tr>
+          <tr style={{backgroundColor: "white"}}>
               <td>No Requests</td>
               <td>.</td>
               <td>.</td>
@@ -582,7 +582,7 @@ const CancelTableRow = props => {
     }
 
     return (
-      <tr>
+      <tr style={{backgroundColor: "white"}}>
           <td>{props.username}</td>
           <td>{props.date}</td>
           <td>{props.time}</td>
@@ -620,7 +620,7 @@ const AlternativesTable = props => {
 
     if (props.username === "") {
         return (
-          <tr>
+          <tr style={{backgroundColor: "white"}}>
               <td>No Alternatives</td>
               <td>.</td>
               <td>.</td>
@@ -629,7 +629,7 @@ const AlternativesTable = props => {
         )
     }
     return (
-      <tr>
+      <tr style={{backgroundColor: "white"}}>
           <td>{props.username}</td>
           <td>{props.date}</td>
           <td>{props.time}</td>

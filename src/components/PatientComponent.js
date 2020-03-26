@@ -213,7 +213,7 @@ const AppointmentComp = () => {
                         height: "50%",
                     }}>
                         <thead>
-                        <tr>
+                        <tr style={{backgroundColor: "#4f96e8"}}>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Doctor</th>
@@ -464,7 +464,7 @@ const AvailabilityComp = () => {
 const TableRow = props => {
     if (props.date === "") {
         return (
-          <tr>
+          <tr style={{backgroundColor: "white"}}>
               <td>No Appointments</td>
               <td>.</td>
               <td>.</td>
@@ -480,7 +480,7 @@ const TableRow = props => {
     }
 
     return (
-      <tr>
+      <tr style={{backgroundColor: "white"}}>
           <td>{props.date}</td>
           <td>{props.time}</td>
           <td>{props.doctor}</td>
