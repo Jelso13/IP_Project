@@ -20,7 +20,7 @@ import * as dates from "./dates"
 import Popup from "reactjs-popup"
 import moment from "moment"
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import icon from '../images/Icon.png'
+import icon from "../images/Icon.png"
 import Layout from "./layout"
 
 const PatientComponent = props => {
@@ -49,7 +49,7 @@ const HomeComp = () => {
     const userType = cookies.get("uType")
     const [showSpinner, toggleSpinner] = useState(false)
 
-    const [notifications, setNot] = useState([]);
+    const [notifications, setNot] = useState([])
 
     useEffect(() => {
         toggleSpinner(true)
@@ -79,12 +79,12 @@ const HomeComp = () => {
 
     return (
       <div>
-          <div style = {{
-              backgroundImage: "url("+icon+")",
+          <div style={{
+              backgroundImage: "url(" + icon + ")",
               backgroundRepeat: "no-repeat",
               backgroundSize: "contain",
-              backgroundPosition:"center bottom",
-              minHeight: "100px"
+              backgroundPosition: "center bottom",
+              minHeight: "100px",
           }}>
           </div>
           <h1>Home</h1>
@@ -93,15 +93,15 @@ const HomeComp = () => {
           {showSpinner ? (
             <SpinnerComp/>
           ) : (
-          notifications.length > 0 ? (
-            notifications.map((value,index) => {
-                return (
-                  <p key={index}>{value}</p>
-                )
-            })
-          ) : (
-            <></>
-          ))}
+            notifications.length > 0 ? (
+              notifications.map((value, index) => {
+                  return (
+                    <p key={index}>{value}</p>
+                  )
+              })
+            ) : (
+              <></>
+            ))}
       </div>
     )
 }
@@ -190,53 +190,66 @@ const AppointmentComp = () => {
     // for the appointments in the database with the correct patient ID
     // value and are then added to the table.
     return (
-      <div>
-          <h1>Appointments</h1>
-          {showSpinner ? (
-            <SpinnerComp/>
-          ) : (
-            <div>
-                <Table  style={{
-                    height: '400px',
+      <div style={{
+          height: "100%",
+          maxHeight: "70%",
+          overflowY: "auto",
+      }}>
+          <div style={{
+              height: "100%",
+              maxHeight: "85%",
+              overflowY: "hidden",
+          }}>
+              <h1>Appointments</h1>
+              {showSpinner ? (
+                <SpinnerComp/>
+              ) : (
+                <div style={{
+                    maxHeight: "70%",
                     overflowY: "auto",
-                    display: 'block',
+                    display: "block",
                 }}>
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Doctor</th>
-                        <th>Clinic</th>
-                        <th>Select</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {appointments.length > 0 ? (
-                      appointments.map((value, index) => {
-                          return (
-                            <TableRow
-                              key={index}
-                              checkIndex={index}
-                              date={value.date}
-                              time={value.time}
-                              doctor={value.doctor}
-                              clinic={value.clinic}
-                              checkboxes={checkstate}
-                              updateCheck={updateCheck}
-                            />
-                          )
-                      })
-                    ) : (
-                      <TableRow date={""}/>
-                    )}
-                    </tbody>
-                </Table>
-            </div>
-          )}
+                    <Table striped bordered hover size="sm"  style={{
+                        height: '50%',
+                    }}>
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Doctor</th>
+                            <th>Clinic</th>
+                            <th>Select</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {appointments.length > 0 ? (
+                          appointments.map((value, index) => {
+                              return (
+                                <TableRow
+                                  key={index}
+                                  checkIndex={index}
+                                  date={value.date}
+                                  time={value.time}
+                                  doctor={value.doctor}
+                                  clinic={value.clinic}
+                                  checkboxes={checkstate}
+                                  updateCheck={updateCheck}
+                                />
+                              )
+                          })
+                        ) : (
+                          <TableRow date={""}/>
+                        )}
+                        </tbody>
+                    </Table>
+                </div>
+              )}
+          </div>
+          <div style={{margin: "5px", height: "100%", maxHeight: "10%"}}>
           <Popup
             modal
             trigger={
-                <Button variant="dark" style={{ margin: "10px" }}>
+                <Button variant="dark">
                     Request Cancellation
                 </Button>
             }
@@ -269,6 +282,7 @@ const AppointmentComp = () => {
                 </div>
               )}
           </Popup>
+          </div>
       </div>
     )
 }
@@ -577,7 +591,7 @@ const ReqCallComp = () => {
                         </InputGroup>
                         {error === "n" ? (<p></p>) :
                           error === "w" ? (<p>Password is not correct</p>) :
-                          (<p>Request Submitted</p>)}
+                            (<p>Request Submitted</p>)}
                     </div>
                   ) : (
                     <p>please enter a phone number</p>
