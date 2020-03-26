@@ -13,7 +13,7 @@ const Header = (props) => (
       width: "100%"
     }}
   >
-    <Navbar bg="dark" variant="dark" style={{minWidth:"420px"}}>
+    <Navbar bg="dark" variant="dark" style={{minWidth:"600px"}}>
       <Nav className="mr-auto" expand={"lg"}>
           <div style = {{
               backgroundImage: "url("+iconMan+")",

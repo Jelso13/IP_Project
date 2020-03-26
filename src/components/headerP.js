@@ -10,15 +10,17 @@ const HeaderPat = (props) => {
     style={{
       overflowX:"hidden",
       overflowY:"hidden",
-        width:"100hv"
+        width:"100%",
+        maxWidth: "100%"
     }}
   >
      <div style={{
          overflowX:"auto",
          overflowY:"auto",
-         width:"100hv"
+         width:"100%",
+         maxWidth: "100%"
      }}>
-    <Navbar bg="dark" variant="dark" style={{minWidth:"420px"}}>
+    <Navbar bg="dark" variant="dark" style={{minWidth:"600px"}}>
       <Nav className="mr-auto" expand={"lg"}>
           <div style = {{
               backgroundImage: "url("+iconMan+")",

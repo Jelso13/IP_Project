@@ -25,16 +25,13 @@ import Layout from "./layout"
 
 const PatientComponent = props => {
     // height: calc(100% - x pixels)
-    if (props.currentTab === "home"){
+    if (props.currentTab === "home") {
         return (<HomeComp/>)
-    }
-    else if (props.currentTab === "appointments"){
+    } else if (props.currentTab === "appointments") {
         return (<AppointmentComp/>)
-    }
-    else if (props.currentTab === "availability"){
+    } else if (props.currentTab === "availability") {
         return (<AvailabilityComp/>)
-    }
-    else if (props.currentTab === "reqCall"){
+    } else if (props.currentTab === "reqCall") {
         return (<ReqCallComp/>)
     }
 }
@@ -75,7 +72,7 @@ const HomeComp = () => {
 
     return (
       <div id={"yeet"} style={{
-          maxHeight: "70%",
+          maxHeight: "100%",
           height: "100%",
       }}>
           <div style={{
@@ -83,18 +80,24 @@ const HomeComp = () => {
               backgroundRepeat: "no-repeat",
               backgroundSize: "contain",
               backgroundPosition: "center top",
-              height: "70%",
-              maxHeight: "150hv",
+              height: "100%",
+              maxHeight: "50%",
           }}>
           </div>
-          <h1>Home</h1>
+          <h1 style={{
+              marginTop: "0px",
+              marginBottom: "10px",
+              maxHeight: "10%",
+              height: "100%",
+          }}>Home</h1>
           <div style={{
               height: "100%",
               maxHeight: "40%",
-              overflowY: "auto"
+              overflowY: "auto",
           }}>
               <p style={{ margin: 0 }}>{"Welcome " + username}</p>
-              <p>{"You have now logged in as " + userType}</p>
+              <p style={{ margin: 0 }}>{"You have now logged in as " + userType}</p>
+              <p style={{ margin: 0 }}>{"yeet"}</p>
               {showSpinner ? (
                 <SpinnerComp/>
               ) : (
@@ -403,59 +406,62 @@ const AvailabilityComp = () => {
           maxHeight: "100%",
           overflowY: "hidden",
       }}>
-              <h1>Availability</h1>
-              <div style={{
-                  overflowY: "auto",
-                  height: "100%",
-                  maxHeight: "55%",
-              }}>
-                  <BigCalendar.Calendar
-                    resizableAccessor={() => false}
-                    events={myEvents}
-                    localizer={localizer}
-                    defaultView={"day"}
-                    views={["day", "month", "agenda"]}
-                    style={{ height: "100vh", width: "95%" }}
-                    selectable={true}
-                    onView={val => {
-                        changeView(val)
-                    }}
-                    defaultDate={now}
-                    min={new Date("2017, 1, 7, 07:00")}
-                    max={new Date("2017, 1, 7, 19:00")}
-                    components={{
-                        dateCellWrapper: DateCell,
-                    }}
-                    onSelectSlot={event => handleSelect(event)}
-                  />
-              </div>
-              <div style={{
-                  height: "100%",
-                  maxHeight: "30%",
-                  overflowY: "hidden",
-              }}>
+          <h1 style={{
+              maxHeight: "10%",
+              height: "100%",
+          }}>Availability</h1>
+          <div style={{
+              overflowY: "auto",
+              height: "100%",
+              maxHeight: "60%",
+          }}>
+              <BigCalendar.Calendar
+                resizableAccessor={() => false}
+                events={myEvents}
+                localizer={localizer}
+                defaultView={"day"}
+                views={["day", "month", "agenda"]}
+                style={{ height: "100%", width: "95%" }}
+                selectable={true}
+                onView={val => {
+                    changeView(val)
+                }}
+                defaultDate={now}
+                min={new Date("2017, 1, 7, 07:00")}
+                max={new Date("2017, 1, 7, 19:00")}
+                components={{
+                    dateCellWrapper: DateCell,
+                }}
+                onSelectSlot={event => handleSelect(event)}
+              />
+          </div>
+          <div style={{
+              height: "30%",
+              maxHeight: "30%",
+              overflowY: "auto",
+          }}>
+              <Button
+                onClick={e => handlePop()}
+                style={{ marginRight: "50px", marginTop: "20px" }}
+                variant={"dark"}
+              >
+                  Undo
+              </Button>
+              {
                   <Button
-                    onClick={e => handlePop()}
+                    onClick={e => submitAvailability()}
                     style={{ marginRight: "50px", marginTop: "20px" }}
                     variant={"dark"}
                   >
-                      Undo
+                      Submit Availability
                   </Button>
-                  {
-                      <Button
-                        onClick={e => submitAvailability()}
-                        style={{ marginRight: "50px", marginTop: "20px" }}
-                        variant={"dark"}
-                      >
-                          Submit Availability
-                      </Button>
-                  }
-                  {submitted ? <p>Submission sent</p> :
-                    <p style={{ marginTop: 0, padding: 0 }}>
-                        Drag over times in the day to view to select a section of time
-                    </p>
-                  }
-              </div>
+              }
+              {submitted ? <p>Submission sent</p> :
+                <p style={{ marginTop: 0, padding: 0, marginBottom: 0 }}>
+                    Drag over times in the day to view to select a section of time
+                </p>
+              }
+          </div>
       </div>
     )
 }
