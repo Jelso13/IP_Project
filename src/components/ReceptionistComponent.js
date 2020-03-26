@@ -474,19 +474,26 @@ const AppointmentManagementComp = () => {
     return (
       <div style={{
           height: "100%",
-          maxHeight: "100%"
+          maxHeight: "100%",
+          overflowY: "auto"
       }}>
           {showSpinner ? <SpinnerComp/> :
-            <div>
+            <div style={{
+                height: "100%",
+                maxHeight: "50%",
+                overflowY: "auto"
+            }}>
                 <h1>Appointment Management</h1>
-                <Container fluid>
+                <Container fluid style={{
+                    overflowY: "auto",
+                    height: "auto",
+                    maxHeight: "70%"
+                }}>
                     <Row>
                         <Col>
                             <h5 style={{ margin: "5px" }}>Cancellations</h5>
-                            <Table striped bordered hover size="sm" style={{
-                                height: '400px',
-                                overflowY: "auto",
-                                display: 'block',
+                            <Table striped bordered hover size="sm"  style={{
+                                height: '100%',
                             }}>
                                 <thead>
                                 <tr>
@@ -524,8 +531,6 @@ const AppointmentManagementComp = () => {
                                 height: 'auto',
                                 width: "auto",
                                 maxHeight: "100%",
-                                overflowY: "auto",
-                                display: 'block',
                             }}>
                                 <thead>
                                 <tr>
@@ -557,9 +562,9 @@ const AppointmentManagementComp = () => {
                                 </tbody>
                             </Table>
                         </Col></Row></Container>
-                <Button variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with
-                    alternative</Button>
             </div>}
+          <Button style={{margin: "0"}} variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with
+              alternative</Button>
       </div>
     )
 }

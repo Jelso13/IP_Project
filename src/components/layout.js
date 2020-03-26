@@ -31,8 +31,14 @@ const Layout = ({ children, headerChoice, changeTab }) => {
                 overflow: "hidden",
             }}>
               <div style={{
+                  top: 0,
                   maxHeight: "15%",
-                  position: "sticky",
+                  maxWidth: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  flex: 1,
+                  width: "100%",
+                  height: "100%",
               }}>
                   {headerChoice === "patient" ? <HeaderPat changeTab={changeTab}/> : <Header changeTab={changeTab}/>}
               </div>
@@ -48,7 +54,7 @@ const Layout = ({ children, headerChoice, changeTab }) => {
                     flexDirection: "column",
                     flex: 1,
                     width: "100%",
-                    overflow: "auto",
+                    overflow: "hidden",
                     maxHeight: "70%",
                 }}
               >
