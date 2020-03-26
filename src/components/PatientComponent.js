@@ -209,8 +209,8 @@ const AppointmentComp = () => {
                     overflowY: "auto",
                     display: "block",
                 }}>
-                    <Table striped bordered hover size="sm"  style={{
-                        height: '50%',
+                    <Table striped bordered hover size="sm" style={{
+                        height: "50%",
                     }}>
                         <thead>
                         <tr>
@@ -245,43 +245,43 @@ const AppointmentComp = () => {
                 </div>
               )}
           </div>
-          <div style={{margin: "5px", height: "100%", maxHeight: "10%"}}>
-          <Popup
-            modal
-            trigger={
-                <Button variant="dark">
-                    Request Cancellation
-                </Button>
-            }
-            position="left center"
-          >
-              {doubleCheck ? (
-                <div style={{ backgroundColor: "#818cf7" }}>
-                    <h1 style={{ textAlign: "center" }}>
-                        Are you sure you want to make these changes?
-                    </h1>
-                    <div
-                      style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                      }}
-                    >
-                        <Button
-                          variant={"dark"}
-                          onClick={() => cancelHandler()}
-                          style={{ margin: "50px" }}
+          <div style={{ margin: "5px", height: "100%", maxHeight: "10%" }}>
+              <Popup
+                modal
+                trigger={
+                    <Button variant="dark">
+                        Request Cancellation
+                    </Button>
+                }
+                position="left center"
+              >
+                  {doubleCheck ? (
+                    <div style={{ backgroundColor: "#818cf7" }}>
+                        <h1 style={{ textAlign: "center" }}>
+                            Are you sure you want to make these changes?
+                        </h1>
+                        <div
+                          style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                          }}
                         >
-                            Accept
-                        </Button>
+                            <Button
+                              variant={"dark"}
+                              onClick={() => cancelHandler()}
+                              style={{ margin: "50px" }}
+                            >
+                                Accept
+                            </Button>
+                        </div>
                     </div>
-                </div>
-              ) : (
-                <div style={{ margin: "50px" }}>
-                    <p>Request completed! :)</p>
-                </div>
-              )}
-          </Popup>
+                  ) : (
+                    <div style={{ margin: "50px" }}>
+                        <p>Request completed! :)</p>
+                    </div>
+                  )}
+              </Popup>
           </div>
       </div>
     )
@@ -298,8 +298,10 @@ const AvailabilityComp = () => {
     const [k, forceRerender] = useState(false)
     const now = new Date()
     now.setDate(now.getDate() + 3)
+    now.setHours(0)
     const minDate = new Date()
     minDate.setDate(minDate.getDate() + 3)
+    minDate.setHours(0)
     const handleSelect = event => {
         const value = event.start
         if (currentView !== "month" && currentView !== "week" && value >= now) {
@@ -390,47 +392,70 @@ const AvailabilityComp = () => {
     }
 
     return (
-      <div>
-          <h1>Availability</h1>
-          <BigCalendar.Calendar
-            events={myEvents}
-            localizer={localizer}
-            defaultView={"day"}
-            views={["day", "month", "agenda"]}
-            style={{ height: "400px", width: "95%" }}
-            selectable={true}
-            onView={val => {
-                changeView(val)
-            }}
-            defaultDate={now}
-            min={new Date("2017, 1, 7, 07:00")}
-            max={new Date("2017, 1, 7, 19:00")}
-            components={{
-                dateCellWrapper: DateCell,
-            }}
-            onSelectSlot={event => handleSelect(event)}
-          />
-          <Button
-            onClick={e => handlePop()}
-            style={{ marginRight: "50px", marginTop: "20px" }}
-            variant={"dark"}
-          >
-              Undo
-          </Button>
-          {
-              <Button
-                onClick={e => submitAvailability()}
-                style={{ marginRight: "50px", marginTop: "20px" }}
-                variant={"dark"}
-              >
-                  Submit Availability
-              </Button>
-          }
-          {submitted ? <h1>Submission sent</h1> : <></>}
-          <p style={{ marginTop: 0, padding: 0 }}>
-              You can add availability for 3 days time. Drag over times in the day
-              view to select a section of time
-          </p>
+      <div style={{
+          height: "100%",
+          maxHeight: "70%",
+          overflowY: "hidden",
+      }}>
+          <div id={"yeet"} style={{
+              height: "100%",
+              maxHeight: "70%",
+              overflowY: "hidden",
+          }}>
+              <h1>Availability</h1>
+              <div style={{
+                  overflowY: "auto",
+                  height: "100%",
+                  maxHeight: "55%",
+              }}>
+                  <BigCalendar.Calendar
+                    resizableAccessor={() => false}
+                    events={myEvents}
+                    localizer={localizer}
+                    defaultView={"day"}
+                    views={["day", "month", "agenda"]}
+                    style={{ height: "100vh", width: "95%" }}
+                    selectable={true}
+                    onView={val => {
+                        changeView(val)
+                    }}
+                    defaultDate={now}
+                    min={new Date("2017, 1, 7, 07:00")}
+                    max={new Date("2017, 1, 7, 19:00")}
+                    components={{
+                        dateCellWrapper: DateCell,
+                    }}
+                    onSelectSlot={event => handleSelect(event)}
+                  />
+              </div>
+              <div style={{
+                  height: "100%",
+                  maxHeight: "30%",
+                  overflowY: "hidden",
+              }}>
+                  <Button
+                    onClick={e => handlePop()}
+                    style={{ marginRight: "50px", marginTop: "20px" }}
+                    variant={"dark"}
+                  >
+                      Undo
+                  </Button>
+                  {
+                      <Button
+                        onClick={e => submitAvailability()}
+                        style={{ marginRight: "50px", marginTop: "20px" }}
+                        variant={"dark"}
+                      >
+                          Submit Availability
+                      </Button>
+                  }
+                  {submitted ? <p>Submission sent</p> :
+                    <p style={{ marginTop: 0, padding: 0 }}>
+                        Drag over times in the day to view to select a section of time
+                    </p>
+                  }
+              </div>
+          </div>
       </div>
     )
 }
