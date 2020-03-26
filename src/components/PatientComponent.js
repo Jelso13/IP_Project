@@ -71,7 +71,7 @@ const HomeComp = () => {
     }, [])
 
     return (
-      <div id={"yeet"} style={{
+      <div style={{
           maxHeight: "100%",
           height: "100%",
       }}>
@@ -97,7 +97,7 @@ const HomeComp = () => {
           }}>
               <p style={{ margin: 0 }}>{"Welcome " + username}</p>
               <p style={{ margin: 0 }}>{"You have now logged in as " + userType}</p>
-              <p style={{ margin: 0 }}>{"yeet"}</p>
+              <p style={{ margin: 0 }}>{"this is a placeholder for most recent appointment"}</p>
               {showSpinner ? (
                 <SpinnerComp/>
               ) : (

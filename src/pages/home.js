@@ -9,9 +9,6 @@ import CookieChecker from "../components/CookieChecker"
 import PatientComponent from "../components/PatientComponent"
 import ReceptionistComponent from "../components/ReceptionistComponent"
 
-// import patientComponents from "../components/patientComponents"
-// import receptionistComponents from "../components/receptionistComponents"
-
 const HomePage = ({location}) => {
   // console.log(cookies.getAll());
 
