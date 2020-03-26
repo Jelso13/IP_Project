@@ -25,22 +25,18 @@ import Layout from "./layout"
 
 const PatientComponent = props => {
     // height: calc(100% - x pixels)
-
-    return (
-      <div>
-          {props.currentTab === "home" ? (
-            <HomeComp/>
-          ) : props.currentTab === "appointments" ? (
-            <AppointmentComp/>
-          ) : props.currentTab === "availability" ? (
-            <AvailabilityComp/>
-          ) : props.currentTab === "reqCall" ? (
-            <ReqCallComp/>
-          ) : (
-            <h1>Error</h1>
-          )}
-      </div>
-    )
+    if (props.currentTab === "home"){
+        return (<HomeComp/>)
+    }
+    else if (props.currentTab === "appointments"){
+        return (<AppointmentComp/>)
+    }
+    else if (props.currentTab === "availability"){
+        return (<AvailabilityComp/>)
+    }
+    else if (props.currentTab === "reqCall"){
+        return (<ReqCallComp/>)
+    }
 }
 
 const HomeComp = () => {
@@ -78,30 +74,40 @@ const HomeComp = () => {
     }, [])
 
     return (
-      <div>
+      <div id={"yeet"} style={{
+          maxHeight: "70%",
+          height: "100%",
+      }}>
           <div style={{
               backgroundImage: "url(" + icon + ")",
               backgroundRepeat: "no-repeat",
               backgroundSize: "contain",
-              backgroundPosition: "center bottom",
-              minHeight: "100px",
+              backgroundPosition: "center top",
+              height: "70%",
+              maxHeight: "150hv",
           }}>
           </div>
           <h1>Home</h1>
-          <p style={{ margin: 0 }}>{"Welcome " + username}</p>
-          <p>{"You have now logged in as " + userType}</p>
-          {showSpinner ? (
-            <SpinnerComp/>
-          ) : (
-            notifications.length > 0 ? (
-              notifications.map((value, index) => {
-                  return (
-                    <p key={index}>{value}</p>
-                  )
-              })
-            ) : (
-              <></>
-            ))}
+          <div style={{
+              height: "100%",
+              maxHeight: "40%",
+              overflowY: "auto"
+          }}>
+              <p style={{ margin: 0 }}>{"Welcome " + username}</p>
+              <p>{"You have now logged in as " + userType}</p>
+              {showSpinner ? (
+                <SpinnerComp/>
+              ) : (
+                notifications.length > 0 ? (
+                  notifications.map((value, index) => {
+                      return (
+                        <p key={index}>{value}</p>
+                      )
+                  })
+                ) : (
+                  <></>
+                ))}
+          </div>
       </div>
     )
 }
@@ -192,7 +198,7 @@ const AppointmentComp = () => {
     return (
       <div style={{
           height: "100%",
-          maxHeight: "70%",
+          maxHeight: "100%",
           overflowY: "auto",
       }}>
           <div style={{
@@ -213,7 +219,7 @@ const AppointmentComp = () => {
                         height: "50%",
                     }}>
                         <thead>
-                        <tr style={{backgroundColor: "#4f96e8"}}>
+                        <tr style={{ backgroundColor: "#4f96e8" }}>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Doctor</th>
@@ -394,14 +400,9 @@ const AvailabilityComp = () => {
     return (
       <div style={{
           height: "100%",
-          maxHeight: "70%",
+          maxHeight: "100%",
           overflowY: "hidden",
       }}>
-          <div id={"yeet"} style={{
-              height: "100%",
-              maxHeight: "70%",
-              overflowY: "hidden",
-          }}>
               <h1>Availability</h1>
               <div style={{
                   overflowY: "auto",
@@ -455,7 +456,6 @@ const AvailabilityComp = () => {
                     </p>
                   }
               </div>
-          </div>
       </div>
     )
 }
@@ -464,7 +464,7 @@ const AvailabilityComp = () => {
 const TableRow = props => {
     if (props.date === "") {
         return (
-          <tr style={{backgroundColor: "white"}}>
+          <tr style={{ backgroundColor: "white" }}>
               <td>No Appointments</td>
               <td>.</td>
               <td>.</td>
@@ -480,7 +480,7 @@ const TableRow = props => {
     }
 
     return (
-      <tr style={{backgroundColor: "white"}}>
+      <tr style={{ backgroundColor: "white" }}>
           <td>{props.date}</td>
           <td>{props.time}</td>
           <td>{props.doctor}</td>

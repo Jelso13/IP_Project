@@ -20,18 +20,28 @@ const HomeComp = () => {
     const username = cookies.get("username")
     const userType = cookies.get("uType")
 
-    return (<div>
-          <div style = {{
-              backgroundImage: "url("+icon+")",
+    return (<div style={{
+          maxHeight: "70%",
+          height: "100%",
+      }}>
+          <div style={{
+              backgroundImage: "url(" + icon + ")",
               backgroundRepeat: "no-repeat",
               backgroundSize: "contain",
-              backgroundPosition:"center bottom",
-              minHeight: "100px"
+              backgroundPosition: "center bottom",
+              height: "70%",
+              maxHeight: "100hv",
           }}>
           </div>
           <h1>Home</h1>
-          <p style={{ margin: 0 }}>{"Welcome " + username}</p>
-          <p>{"You have now logged in as " + userType}</p>
+          <div style={{
+              height: "100%",
+              maxHeight: "40%",
+              overflowY: "auto"
+          }}>
+              <p style={{ margin: 0 }}>{"Welcome " + username}</p>
+              <p>{"You have now logged in as " + userType}</p>
+          </div>
       </div>
     )
 }
@@ -126,7 +136,7 @@ const CallReqComp = () => {
             <div>
                 <Table striped bordered hover size="sm">
                     <thead>
-                    <tr style={{backgroundColor: "#4f96e8"}}>
+                    <tr style={{ backgroundColor: "#4f96e8" }}>
                         <th>Name</th>
                         <th>Phone Number</th>
                     </tr>
@@ -165,7 +175,7 @@ const TableRow = props => {
     if (props.username === "") {
         console.log("hit")
         return (
-          <tr style={{backgroundColor: "white"}}>
+          <tr style={{ backgroundColor: "white" }}>
               <td>No Requests</td>
               <td>.</td>
           </tr>
@@ -179,7 +189,7 @@ const TableRow = props => {
     }
 
     return (
-      <tr style={{backgroundColor: "white"}}>
+      <tr style={{ backgroundColor: "white" }}>
           <td>{props.username}</td>
           <td>{props.number}</td>
           <td>
@@ -245,13 +255,13 @@ const AppointmentManagementComp = () => {
                   body: radioState,
               },
             ).then((response) => {
-                  return response.json()
-              }).then((data) => {
-                  setAlt(data["data"])
-                  console.log(alternatives)
-                  console.log(data)
-                  toggleSpinner(false)
-              }).catch((err) => {
+                return response.json()
+            }).then((data) => {
+                setAlt(data["data"])
+                console.log(alternatives)
+                console.log(data)
+                toggleSpinner(false)
+            }).catch((err) => {
                 console.log(err)
             })
             console.log(radioState)
@@ -278,8 +288,8 @@ const AppointmentManagementComp = () => {
             console.log(radioStateA)
             let x = JSON.parse(radioStateA)
             let y = JSON.parse(radioState)
-            console.log(x);
-            console.log(y);
+            console.log(x)
+            console.log(y)
             changeRadioA({})
             changeRadio({})
             changeRadioA(x)
@@ -306,14 +316,14 @@ const AppointmentManagementComp = () => {
                 "username": y.username,
                 "message": "The appointment on " + y.date +
                   " at " + y.time + " with " + y.doctor +
-                  " has been cancelled."
+                  " has been cancelled.",
             }
 
             var notB = {
                 "username": x.username,
                 "message": "The appointment on " + x.date +
                   " at " + x.time + " with " + x.doctor +
-                  " has been moved to " + x.date + " at " + x.time
+                  " has been moved to " + x.date + " at " + x.time,
             }
             // write function that stores notification requests for both the cancelling patient
             // and the alternative patient such that they are notified on their home page that
@@ -328,127 +338,133 @@ const AppointmentManagementComp = () => {
                   body: JSON.stringify(newApp),
               },
             ).then((response) => {
-                  return response.json()
-              }).then((data) => {
-                  console.log(data.m)
-              }).catch((err) => {
+                return response.json()
+            }).then((data) => {
+                console.log(data.m)
+            }).catch((err) => {
                 console.log(err)
             }).then(() => {
-              fetch(
-                "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(doc_json),
-                },
-              )
-                .then((response) => {
-                    return response.json()
+                fetch(
+                  "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateDocAppointment",
+                  {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(doc_json),
+                  },
+                )
+                  .then((response) => {
+                      return response.json()
+                  })
+                  .then((data) => {
+                      console.log(data.m)
+                  }).catch((err) => {
+                    console.log(err)
                 })
-                .then((data) => {
-                    console.log(data.m)
-                }).catch((err) => {
-                  console.log(err)
-              })}).then(() => {
-              fetch(
-                "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(y),
-                },
-              )
-                .then((response) => {
-                    return response.json()
+            }).then(() => {
+                fetch(
+                  "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
+                  {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(y),
+                  },
+                )
+                  .then((response) => {
+                      return response.json()
+                  })
+                  .then((data) => {
+                      console.log(data.m)
+                  }).catch((err) => {
+                    console.log(err)
                 })
-                .then((data) => {
-                    console.log(data.m)
-                }).catch((err) => {
-                  console.log(err)
-              })}).then(() => {
-              fetch(
-                "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(x),
-                },
-              )
-                .then((response) => {
-                    return response.json()
+            }).then(() => {
+                fetch(
+                  "https://europe-west1-sustained-node-257616.cloudfunctions.net/DeleteAppointment",
+                  {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(x),
+                  },
+                )
+                  .then((response) => {
+                      return response.json()
+                  })
+                  .then((data) => {
+                      console.log(data.m)
+                  }).catch((err) => {
+                    console.log(err)
                 })
-                .then((data) => {
-                    console.log(data.m)
-                }).catch((err) => {
-                  console.log(err)
-              })}).then(() => {
-              fetch(
-                "https://europe-west2-sustained-node-257616.cloudfunctions.net/DeleteCancellation",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(y),
-                },
-              )
-                .then((response) => {
-                    return response.json()
+            }).then(() => {
+                fetch(
+                  "https://europe-west2-sustained-node-257616.cloudfunctions.net/DeleteCancellation",
+                  {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(y),
+                  },
+                )
+                  .then((response) => {
+                      return response.json()
+                  })
+                  .then((data) => {
+                      console.log(data.m)
+                  }).catch((err) => {
+                    console.log(err)
                 })
-                .then((data) => {
-                    console.log(data.m)
-                }).catch((err) => {
-                  console.log(err)
-              })}).then(() => {
-                  console.log(notA)
-              fetch(
-                "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(notA),
-                },
-              )
-                .then((response) => {
-                    return response.json()
+            }).then(() => {
+                console.log(notA)
+                fetch(
+                  "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
+                  {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(notA),
+                  },
+                )
+                  .then((response) => {
+                      return response.json()
+                  })
+                  .then((data) => {
+                      console.log(data.m)
+                  }).catch((err) => {
+                    console.log(err)
                 })
-                .then((data) => {
-                    console.log(data.m)
-                }).catch((err) => {
-                  console.log(err)
-              })}).then(() => {
-              fetch(
-                "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
-                {
-                    method: "POST",
-                    mode: "cors",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(notB),
-                },
-              )
-                .then((response) => {
-                    return response.json()
+            }).then(() => {
+                fetch(
+                  "https://europe-west2-sustained-node-257616.cloudfunctions.net/CreateNotification",
+                  {
+                      method: "POST",
+                      mode: "cors",
+                      headers: {
+                          "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(notB),
+                  },
+                )
+                  .then((response) => {
+                      return response.json()
+                  })
+                  .then((data) => {
+                      console.log(data.m)
+                  }).catch((err) => {
+                    console.log(err)
                 })
-                .then((data) => {
-                    console.log(data.m)
-                }).catch((err) => {
-                  console.log(err)
-              })});
+            })
 
             console.log("yes")
             console.log(radioState)
@@ -475,28 +491,28 @@ const AppointmentManagementComp = () => {
       <div style={{
           height: "100%",
           maxHeight: "100%",
-          overflowY: "auto"
+          overflowY: "auto",
       }}>
           {showSpinner ? <SpinnerComp/> :
             <div style={{
                 height: "100%",
                 maxHeight: "70%",
-                overflowY: "hidden"
+                overflowY: "hidden",
             }}>
                 <h1>Appointment Management</h1>
                 <Container fluid style={{
                     overflowY: "auto",
                     height: "auto",
-                    maxHeight: "70%"
+                    maxHeight: "70%",
                 }}>
                     <Row>
                         <Col>
                             <h5 style={{ margin: "5px" }}>Cancellations</h5>
-                            <Table striped bordered hover size="sm"  style={{
-                                height: '50%',
+                            <Table striped bordered hover size="sm" style={{
+                                height: "50%",
                             }}>
                                 <thead>
-                                <tr style={{backgroundColor: "#4f96e8"}}>
+                                <tr style={{ backgroundColor: "#4f96e8" }}>
                                     <th>Username</th>
                                     <th>Date</th>
                                     <th>Time</th>
@@ -528,12 +544,12 @@ const AppointmentManagementComp = () => {
                         <Col>
                             <h5 style={{ margin: "5px" }}>Possible Alternative Patients</h5>
                             <Table striped bordered hover size="sm" style={{
-                                height: 'auto',
+                                height: "auto",
                                 width: "auto",
                                 maxHeight: "100%",
                             }}>
                                 <thead>
-                                <tr style={{backgroundColor: "#4f96e8"}}>
+                                <tr style={{ backgroundColor: "#4f96e8" }}>
                                     <th>Username</th>
                                     <th>Date</th>
                                     <th>Time</th>
@@ -563,7 +579,8 @@ const AppointmentManagementComp = () => {
                             </Table>
                         </Col></Row></Container>
             </div>}
-          <Button style={{margin: "5px"}} variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and replace with
+          <Button style={{ margin: "5px" }} variant={"dark"} onClick={() => changeHandler()}>Confirm cancellation and
+              replace with
               alternative</Button>
       </div>
     )
@@ -572,7 +589,7 @@ const AppointmentManagementComp = () => {
 const CancelTableRow = props => {
     if (props.username === "") {
         return (
-          <tr style={{backgroundColor: "white"}}>
+          <tr style={{ backgroundColor: "white" }}>
               <td>No Requests</td>
               <td>.</td>
               <td>.</td>
@@ -582,7 +599,7 @@ const CancelTableRow = props => {
     }
 
     return (
-      <tr style={{backgroundColor: "white"}}>
+      <tr style={{ backgroundColor: "white" }}>
           <td>{props.username}</td>
           <td>{props.date}</td>
           <td>{props.time}</td>
@@ -620,7 +637,7 @@ const AlternativesTable = props => {
 
     if (props.username === "") {
         return (
-          <tr style={{backgroundColor: "white"}}>
+          <tr style={{ backgroundColor: "white" }}>
               <td>No Alternatives</td>
               <td>.</td>
               <td>.</td>
@@ -629,7 +646,7 @@ const AlternativesTable = props => {
         )
     }
     return (
-      <tr style={{backgroundColor: "white"}}>
+      <tr style={{ backgroundColor: "white" }}>
           <td>{props.username}</td>
           <td>{props.date}</td>
           <td>{props.time}</td>
