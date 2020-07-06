@@ -3,4 +3,6 @@ The below link to netlify actually works now and the deployed website can be vie
 
 [![https://appocheck.netlify.com]()](https://appocheck.netlify.com)
 
+* Google cloud project has been closed *
+
 <!-- AUTO-GENERATED-CONTENT:END -->
