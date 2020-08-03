@@ -28,6 +28,16 @@ const LoginPage = () => {
     const loginHandler = (event) => {
         event.preventDefault()
         if (username && password) {
+            if(username === "reception"){
+                cookies.set("uType", "reception", {path:"/"})
+                cookies.set( "username", username, {path: "/"})
+                navigate( "/home", { state: {currentUser: username, uType: "reception"}})
+            }
+            else {
+                cookies.set("uType", "patient", {path:"/"})
+                cookies.set( "username", username, {path: "/"})
+                navigate( "/home", { state: {currentUser: username, uType: "patient"}})
+            }
             const userData = { "username": username, "password": password }
             fetch("https://europe-west1-sustained-node-257616.cloudfunctions.net/checkLogin", {
                 method: "POST",
